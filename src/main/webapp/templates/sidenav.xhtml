@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view>
+        
+                    <div id="side-panel" class="col-md-2 sidebar sidebar-collapse">
+                        
+                        <ul class="nav-sidebar collapse in">
+                           
+                            <li class="#{view.viewId == '/index.xhtml' ? 'active' : ''}">
+                                <a jsfc="h:link" outcome="/">Home</a>
+                            </li> 
+                            <li class="#{view.viewId == '/ebay/index.xhtml' ? 'active' : ''}">
+                                <a jsfc="h:link" outcome="shop">Shop Ebay Store</a>
+                            </li>
+                            <li class="#{view.viewId == '/ebay/category.xhtml' ? 'active' : ''}">
+                                <a jsfc="h:link" outcome="/ebay/index.xhtml">Shop By Category</a>
+                            </li>
+                            
+                           
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-info sidebar-toggle" 
+                                data-toggle="collapse" 
+                                data-target=".sidebar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class=""></span>
+                            <span class=""></span>
+                            <span class=""></span>
+                            <span class=""></span>
+                        </button>
+                    </div>
+        
+    </f:view>
+</html>
+

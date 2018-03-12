@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <f:view>
+        <!-- Sidebar Widgets Column -->
+         <!-- Side Widget -->
+        <form jsf:id="sideNavLinks">
+        <div class="card my-4">
+            <h5 class="card-header">Navigation</h5>
+            <div class="card-block">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="#{request.contextPath}/">Front Page</a>
+                    </li>
+                    <li class="list-group-item" jsf:id="weblogSideNavLink" rendered="#{weblogBean.handle.length() gt 0}">
+                        <a value="#{request.contextPath}/#{weblogBean.handle}" 
+                           jsfc="h:outputLink" 
+                           jsf:id="weblogHome" >Weblog #{weblogBean.weblog.name}</a>
+                    </li>
+                    <li class="list-group-item" jsf:id="loginSideNavLink" rendered="#{sessionScope.user eq null}">
+                        <a value="#{request.contextPath}/weblogger/login/" 
+                           jsfc="h:outputLink" >Login</a>
+                    </li>
+                    <li class="list-group-item" jsf:id="adminSideNavLink" rendered="#{sessionScope.user ne null}">
+                        <a value="#{request.contextPath}/weblogger/reeler-ui/" 
+                           jsfc="h:outputLink" 
+                           jsf:id="link-admin">Admin</a>
+                    </li>
+                    <li class="list-group-item" jsf:id="logoutSideNavLink" rendered="#{sessionScope.user ne null}">
+                        <a action="#{loginBean.logout()}" 
+                            jsfc="h:commandLink"
+                            jsf:id="link-logout">Logout</a>
+                    </li>     
+                </ul>
+            </div>
+        </div>
+        </form>
+        
+        <!-- Search Widget -->
+        <div class="card my-4" jsf:id="searchWidget" rendered="#{false}">
+            <h5 class="card-header">Search</h5>
+            <div class="card-block">
+                <form action="#{request.contextPath}/#{weblogBean.handle}/search">
+                <div class="input-group">
+                    <input name="q" type="text" class="form-control" placeholder="Search for..."/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="submit">Go!</button>
+                    </span>
+                </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Categories Widget -->
+        <div class="card my-4" jsf:id="categoriesWidget" rendered="#{weblogBean.weblog.weblogCategories.size() gt 0}">
+            <h5 class="card-header">Categories</h5>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-group">
+                            <ui:repeat value="#{weblogBean.weblog.weblogCategories}"
+                                       var="category">
+                                <li class="list-group-item"><a href="#{request.contextPath}/#{weblogBean.handle}/category/#{category.name}">#{category.name}</a></li>
+                            </ui:repeat>                                    
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+         <!-- Side Widget -->
+         <div class="card my-4" jsf:id="calendar" rendered="#{weblogBean.weblog ne null}">
+            <h5 class="card-header">Calendar</h5>
+            <div class="card-block">
+                <h:outputText value="#{calendarPrinterBean.calendarTable(request.contextPath,weblogBean.weblog)}" 
+                              escape="false"/>
+            </div>
+        </div>
+        <!-- Side Widget -->
+        <div class="card my-4" jsf:id="linksWidget" rendered="#{weblogBean.bookmarks.size() gt 0}">
+            <h5 class="card-header">Links</h5>
+              <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-group">
+                            <ui:repeat value="#{weblogBean.bookmarks}"
+                                       var="bookmark">                                
+                                <li class="list-group-item"><a href="#{bookmark.url}" target="_blank">#{bookmark.name}</a></li>                                
+                            </ui:repeat>                                    
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+         <!-- Side Widget -->
+        <div class="card my-4" jsf:id="feeds" rendered="false">
+            <h5 class="card-header">Feeds</h5>
+            <div class="card-block">
+                
+            </div>
+        </div>
+        
+       
+    </f:view>
+</ui:composition>
+
