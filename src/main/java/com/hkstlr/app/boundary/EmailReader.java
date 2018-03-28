@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.inject.Inject;
 import javax.mail.FetchProfile;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -81,13 +80,7 @@ public class EmailReader {
 						props.getProperty("username"),
 						props.getProperty("password"));
 			}
-			// IMAP host for yahoo..
-			/*
-			 * store.connect(props.getProperty("mail.imap.host"), "hkastler",
-			 * "ozxltlpxusohgudc"); /*
-			 * 
-			 */
-			//System.out.println(store);
+			
 
 			Folder blogBox = store.getFolder(props.getProperty("folderName"));
 			if(!blogBox.isOpen())

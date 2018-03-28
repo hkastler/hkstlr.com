@@ -7,13 +7,13 @@
 
     <f:view>
 
-        <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+        <nav class="navbar static-top navbar-toggleable-md navbar-inverse bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" 
                     type="button" data-toggle="collapse" data-target="#navbarReeler"
                     aria-controls="navbarReeler" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="container">
+            
                 <ui:insert name="navbar-brand">
                     <a class="navbar-brand" href="#{request.contextPath}/">
                         #{index.props["site.name"]}
@@ -27,7 +27,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            
         </nav>
 
     </f:view>

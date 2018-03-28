@@ -8,15 +8,15 @@ import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 
 @ApplicationScoped
 @Startup
 @Named
 public class Index {
 
-	private Properties props;
+	private Properties props = new Properties();
 	private BlogMessage[] msgs;
+	private Setup setup;
 		
 	public Index() {
 		//no arg contructor
@@ -24,29 +24,30 @@ public class Index {
 	
 	@PostConstruct
 	void init(){
-		this.props = new Properties();
-		
+				
 		try {
 			props.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();;
+			e.printStackTrace();
 		}	
-		Setup setup = new Setup(props);
+		setup = new Setup(props);
 		if(setup.isSetup()) {
 			fetchAndSetBlogMessages();
+			//props.put("setup", 1);
 		}
 	}
+	
 	
 	public void fetchAndSetBlogMessages() {
 		EmailReader er = new EmailReader(props);
 		int counter = 0;
 		this.msgs = new BlogMessage[er.getMessageCount()];
 		for(Message msg : er.getImapEmails()) {
-			BlogMessage blg = new BlogMessage();
+			 
 			try {
-				blg = new BlogMessage(msg);
+				BlogMessage blg = new BlogMessage(msg);
 				msgs[counter] = blg;
 				counter++;
 			} catch (Exception e) {
@@ -75,7 +76,14 @@ public class Index {
 		this.msgs = msgs;
 	}
 
-	
+	public Setup getSetup() {
+		return setup;
+	}
+
+	public void setSetup(Setup setup) {
+		this.setup = setup;
+	}
+
 	
 	
 	

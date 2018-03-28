@@ -8,6 +8,11 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+
 public class BlogMessage {
 
 	private Date createDate;
@@ -33,7 +38,7 @@ public class BlogMessage {
 		Multipart multipart = (Multipart) msg.getContent();
 		BodyPart clearTextPart = null;
         BodyPart htmlTextPart = null;
-        
+        System.out.println("parts:" + multipart.getCount());
 		for (int i = 0; i < multipart.getCount(); i++) {
 			//System.out.println("MULTIPART: " + multipart.getBodyPart(i).getContent().toString());
 			 BodyPart part =  multipart.getBodyPart(i);
@@ -51,7 +56,12 @@ public class BlogMessage {
 		if (htmlTextPart!=null)
         {
             String html = (String) htmlTextPart.getContent();
-            this.body = html;
+            Document doc = Jsoup.parse(html);
+            Element body = doc.body();
+            System.out.println("body:"+body.html());
+            String safe = body.html();//Jsoup.clean(body.html(), Whitelist.basic());
+
+            this.body = safe;
         } else if(clearTextPart!=null)
         {
 			this.body = (String) clearTextPart.getContent();

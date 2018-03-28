@@ -23,11 +23,11 @@
                            jsf:id="weblogHome" >Weblog #{weblogBean.weblog.name}</a>
                     </li>
                     <li class="list-group-item" jsf:id="loginSideNavLink" rendered="#{sessionScope.user eq null}">
-                        <a value="#{request.contextPath}/weblogger/login/" 
+                        <a value="#{request.contextPath}/login/" 
                            jsfc="h:outputLink" >Login</a>
                     </li>
                     <li class="list-group-item" jsf:id="adminSideNavLink" rendered="#{sessionScope.user ne null}">
-                        <a value="#{request.contextPath}/weblogger/reeler-ui/" 
+                        <a value="#{request.contextPath}/admin/" 
                            jsfc="h:outputLink" 
                            jsf:id="link-admin">Admin</a>
                     </li>

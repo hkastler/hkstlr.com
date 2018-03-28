@@ -13,12 +13,11 @@
                 <div class="panel panel-primary" id="setup">
                     <ui:include src="setupForm.xhtml">
                         <ui:param name="isSetup" value="#{setup.isSetup()}"/>
-                        <ui:param name="formTitle" value="Setup First/Admin User"/>
+                        <ui:param name="formTitle" value="Setup BlogBox"/>
                         <ui:param name="bean" value="#{setup}"/>
                     </ui:include>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="panel my-4" jsfc="h:panelGroup" layout="block" rendered="#{setup.isSetup()}">
