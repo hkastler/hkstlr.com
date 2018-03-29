@@ -38,11 +38,11 @@ public class BlogMessage {
 		Multipart multipart = (Multipart) msg.getContent();
 		BodyPart clearTextPart = null;
         BodyPart htmlTextPart = null;
-        System.out.println("parts:" + multipart.getCount());
+        //System.out.println("parts:" + multipart.getCount());
 		for (int i = 0; i < multipart.getCount(); i++) {
 			//System.out.println("MULTIPART: " + multipart.getBodyPart(i).getContent().toString());
 			 BodyPart part =  multipart.getBodyPart(i);
-			 System.out.println("mime: " + part.getContentType());
+			 //System.out.println("mime: " + part.getContentType());
              if(part.isMimeType("text/plain"))
              {
                  clearTextPart = part;
@@ -58,8 +58,13 @@ public class BlogMessage {
             String html = (String) htmlTextPart.getContent();
             Document doc = Jsoup.parse(html);
             Element body = doc.body();
-            System.out.println("body:"+body.html());
-            String safe = body.html();//Jsoup.clean(body.html(), Whitelist.basic());
+            //System.out.println("body:"+body.html());
+            Whitelist wl = Whitelist.relaxed();
+            wl.addAttributes("div", "style");
+            wl.addTags("font");
+            wl.addAttributes("font", "size");
+            wl.addAttributes("font", "color");
+            String safe = Jsoup.clean(body.html(),wl);
 
             this.body = safe;
         } else if(clearTextPart!=null)
