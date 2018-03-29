@@ -41,6 +41,11 @@ public class Index {
 	
 	
 	public void fetchAndSetBlogMessages() {
+		
+		if(!setup.isSetup()) {
+			return;
+		}
+		
 		EmailReader er = new EmailReader(props);
 		int counter = 0;
 		this.msgs = new BlogMessage[er.getMessageCount()];
