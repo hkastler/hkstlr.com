@@ -6,15 +6,13 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:ps="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-
-	<div class="panel panel-primary" id="setup">
-		#{fn:length(index.msgs)} msgs !!<br />
+    
+    
+	<div class="panel panel-primary" id="entries">
+		
 		<ui:repeat value="#{index.msgs}" var="msg">
-                #{msg.createDate} | #{msg.subject}<br />
-                <h:outputText escape="false"
-                	value="#{msg.body}"/>
-                <br />
-			<hr />
+           <ui:include src="blogrow.xhtml"/>
 		</ui:repeat>
+		
 	</div>
 </ui:composition>

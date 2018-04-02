@@ -92,7 +92,7 @@ public class BlogMessage {
         }
 		return content;
 	}
-	
+
 	
 	
 }

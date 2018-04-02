@@ -1,0 +1,30 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <!-- Title -->
+    <h3 class="mt-4">
+        <a href="#{index.props['folderName']}/entry/something">
+            <h:outputText value="#{msg.subject}" />
+        </a>
+    </h3>
+
+    <p>
+        <!-- Date/Time --> 
+        Posted on                     
+        <h:outputFormat value="#{msg.createDate}" >                            
+            <f:convertDateTime dateStyle="default"
+                               type="both"/>
+        </h:outputFormat>                        
+        
+    </p>
+    <!-- Post Content -->
+    <p>
+        <h:outputText value="#{msg.body}" 
+                      escape="false" />
+    </p>
+    <hr/>
+</ui:composition>
