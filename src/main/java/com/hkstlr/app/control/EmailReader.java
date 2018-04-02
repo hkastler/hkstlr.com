@@ -1,4 +1,4 @@
-package com.hkstlr.app.boundary;
+package com.hkstlr.app.control;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -61,6 +61,7 @@ public class EmailReader {
 				Folder blogBox = store.getFolder(props.getProperty("folderName"));
 				if(!blogBox.isOpen())
 					blogBox.open(Folder.READ_ONLY);
+				
 				msgCount = blogBox.getMessageCount();
 				
 				
@@ -186,7 +187,7 @@ public class EmailReader {
 			FetchProfile fp = new FetchProfile();
 			fp.add(FetchProfile.Item.ENVELOPE);
 			mailbox.fetch(rmsgs, fp);
-			System.out.println("MAILS: " + rmsgs.length);
+			//System.out.println("MAILS: " + rmsgs.length);
 			//rmsgs = msgs;
 			return rmsgs;
 		} catch (Exception e) {

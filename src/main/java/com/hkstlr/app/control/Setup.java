@@ -1,4 +1,4 @@
-package com.hkstlr.app.boundary;
+package com.hkstlr.app.control;
 
 import java.util.Properties;
 
@@ -7,6 +7,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import com.hkstlr.app.boundary.Index;
 
 @Named
 @RequestScoped

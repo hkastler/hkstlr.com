@@ -9,6 +9,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.mail.Message;
 
+import com.hkstlr.app.control.EmailReader;
+import com.hkstlr.app.control.Setup;
+import com.hkstlr.app.entities.BlogMessage;
+
 @ApplicationScoped
 @Startup
 @Named

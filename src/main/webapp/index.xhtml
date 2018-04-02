@@ -5,14 +5,12 @@
     <!-- Page Content -->
     
     <ui:define name="content">
+    	<ui:fragment rendered="#{index.setup.isSetup()}">
+            <ui:include src="view.xhtml"/>
+        </ui:fragment>
         <ui:fragment rendered="#{not index.setup.isSetup()}">
             <ui:include src="setup/index.xhtml"/>
         </ui:fragment>
-        <ui:fragment rendered="#{index.setup.isSetup()}">
-            <ui:include src="view.xhtml"/>
-        </ui:fragment>
-                 
-            
     </ui:define>    
     <!-- /.container -->
 </ui:composition>
