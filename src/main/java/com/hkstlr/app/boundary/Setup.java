@@ -12,10 +12,10 @@ import com.hkstlr.app.entities.User;
 @Model
 public class Setup {
 
-	private User user;
+	private User user = new User();
 	private String folderName;
-	private String action;
-	private Properties props;
+	private String action = "create";
+	private Properties props = new Properties();
 
 
 	public Setup() {
@@ -26,13 +26,7 @@ public class Setup {
 		this.props = props;
 	}
 
-	@PostConstruct
-	void init() {
-		user = new User();
-		action = "create";
-
-	}
-
+	
 	public Properties getProps() {
 		return props;
 	}
