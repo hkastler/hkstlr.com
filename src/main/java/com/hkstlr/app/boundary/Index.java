@@ -45,7 +45,7 @@ public class Index {
 			fetchAndSetBlogMessages();
 			// msgs.sort(Comparator.comparing(o -> o.getCreateDate()));
 			// Collections.sort(msgs, Collections.reverseOrder());
-			System.out.println("sorting");
+			//System.out.println("sorting");
 			Collections.sort(msgs, new Comparator<BlogMessage>() {
 				public int compare(BlogMessage o1, BlogMessage o2) {
 					return o2.getCreateDate().compareTo(o1.getCreateDate());
