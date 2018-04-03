@@ -40,20 +40,13 @@ public class Index {
 			props.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			log.log(Level.SEVERE,null,e);
 		}
 		setup = new Setup(props);
 		if (setup.isSetup()) {
 			log.log(Level.INFO, "fetching");
 			fetchAndSetBlogMessages();
-			
-			log.log(Level.INFO, "sorting");
-			Collections.sort(msgs, new Comparator<BlogMessage>() {
-				public int compare(BlogMessage o1, BlogMessage o2) {
-					return o2.getCreateDate().compareTo(o1.getCreateDate());
-				}
-			});
 		}
 	}
 
@@ -66,18 +59,23 @@ public class Index {
 		EmailReader er = new EmailReader(props);
 
 		for (Message msg : er.getImapEmails()) {
-
 			try {
-
 				msgs.add(new BlogMessage(msg));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				continue;
 			}
-
 		}
+		
 		er.closeStore();
+
+		log.log(Level.INFO, "sorting");
+		Collections.sort(msgs, new Comparator<BlogMessage>() {
+			public int compare(BlogMessage o1, BlogMessage o2) {
+				return o2.getCreateDate().compareTo(o1.getCreateDate());
+			}
+		});
 	}
 
 	public Properties getProps() {
