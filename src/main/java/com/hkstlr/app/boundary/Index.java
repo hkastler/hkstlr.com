@@ -16,7 +16,6 @@ import javax.inject.Named;
 import javax.mail.Message;
 
 import com.hkstlr.app.control.EmailReader;
-import com.hkstlr.app.control.Setup;
 import com.hkstlr.app.entities.BlogMessage;
 
 @ApplicationScoped
@@ -46,6 +45,7 @@ public class Index {
 		setup = new Setup(props);
 		if (setup.isSetup()) {
 			log.log(Level.INFO, "fetching");
+			props.putAll(setup.getProps());
 			fetchAndSetBlogMessages();
 		}
 	}
@@ -62,8 +62,7 @@ public class Index {
 			try {
 				msgs.add(new BlogMessage(msg));
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.log(Level.WARNING,"",e);
 				continue;
 			}
 		}

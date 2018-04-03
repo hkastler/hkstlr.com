@@ -64,12 +64,12 @@ public class BlogMessage {
         String content = null;
         
 		for (int i = 0; i < multipart.getCount(); i++) {
-			//System.out.println("MULTIPART: " + multipart.getBodyPart(i).getContent().toString());
+			
 			 BodyPart part =  multipart.getBodyPart(i);
-			 //System.out.println("mime: " + part.getContentType());
+			 
              if(part.isMimeType("text/plain")) {
                  clearTextPart = part;
-                 //break;
+                 
              }else if(part.isMimeType("text/html")){
                  htmlTextPart = part;
              }
