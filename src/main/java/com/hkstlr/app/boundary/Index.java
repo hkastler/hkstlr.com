@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
@@ -25,6 +27,7 @@ public class Index {
 	private Properties props = new Properties();
 	private List<BlogMessage> msgs = new ArrayList<>();
 	private Setup setup;
+	private static Logger log = Logger.getLogger(Index.class.getName());
 
 	public Index() {
 		// no arg contructor
@@ -38,17 +41,17 @@ public class Index {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE,null,e);
 		}
 		setup = new Setup(props);
 		if (setup.isSetup()) {
+			log.log(Level.INFO, "fetching");
 			fetchAndSetBlogMessages();
-			// msgs.sort(Comparator.comparing(o -> o.getCreateDate()));
-			// Collections.sort(msgs, Collections.reverseOrder());
-			//System.out.println("sorting");
+			
+			log.log(Level.INFO, "sorting");
 			Collections.sort(msgs, new Comparator<BlogMessage>() {
 				public int compare(BlogMessage o1, BlogMessage o2) {
-					return o1.getCreateDate().compareTo(o2.getCreateDate());
+					return o2.getCreateDate().compareTo(o1.getCreateDate());
 				}
 			});
 		}
