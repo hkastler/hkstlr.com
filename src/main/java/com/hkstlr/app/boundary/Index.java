@@ -48,7 +48,7 @@ public class Index {
 			//System.out.println("sorting");
 			Collections.sort(msgs, new Comparator<BlogMessage>() {
 				public int compare(BlogMessage o1, BlogMessage o2) {
-					return o2.getCreateDate().compareTo(o1.getCreateDate());
+					return o1.getCreateDate().compareTo(o2.getCreateDate());
 				}
 			});
 		}
