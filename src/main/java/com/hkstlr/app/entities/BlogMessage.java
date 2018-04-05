@@ -15,66 +15,70 @@ import org.jsoup.safety.Whitelist;
 
 public class BlogMessage {
 
-	private Date createDate;
-	private String subject;
-	private String body;
-	
-	
-	public BlogMessage() {
-		//no-arg
-	}
+    private Date createDate;
+    private String subject;
+    private String body;
 
-	public BlogMessage(Date createDate, String subject, String body) {
-		super();
-		this.createDate = createDate;
-		this.subject = subject;
-		this.body = body;
-	}
-	
-	public BlogMessage(Message msg) throws MessagingException, IOException {
-		super();
-		this.createDate = msg.getReceivedDate();
-		this.subject = msg.getSubject();
-		this.body = processMultipart(msg);	
-	}
-	
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public String getSubject() {
-		return subject;
-	}
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-	public String getBody() {
-		return body;
-	}
-	public void setBody(String body) {
-		this.body = body;
-	}
-	
-	public String processMultipart(Message msg) throws IOException, MessagingException {
-		Multipart multipart = (Multipart) msg.getContent();
-		BodyPart clearTextPart = null;
+    public BlogMessage() {
+        //no-arg
+    }
+
+    public BlogMessage(Date createDate, String subject, String body) {
+        super();
+        this.createDate = createDate;
+        this.subject = subject;
+        this.body = body;
+    }
+
+    public BlogMessage(Message msg) throws MessagingException, IOException {
+        super();
+        this.createDate = msg.getReceivedDate();
+        this.subject = msg.getSubject();
+        this.body = processMultipart(msg);
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String processMultipart(Message msg) throws IOException, MessagingException {
+        Multipart multipart = (Multipart) msg.getContent();
+        BodyPart clearTextPart = null;
         BodyPart htmlTextPart = null;
         String content = null;
-        
-		for (int i = 0; i < multipart.getCount(); i++) {
-			
-			 BodyPart part =  multipart.getBodyPart(i);
-			 
-             if(part.isMimeType("text/plain")) {
-                 clearTextPart = part;
-                 
-             }else if(part.isMimeType("text/html")){
-                 htmlTextPart = part;
-             }
-		}
-		if (htmlTextPart!=null){
+
+        for (int i = 0; i < multipart.getCount(); i++) {
+
+            BodyPart part = multipart.getBodyPart(i);
+
+            if (part.isMimeType("text/plain")) {
+                clearTextPart = part;
+
+            } else if (part.isMimeType("text/html")) {
+                htmlTextPart = part;
+            }
+        }
+        if (htmlTextPart != null) {
             String html = (String) htmlTextPart.getContent();
             Document doc = Jsoup.parse(html);
             Element body = doc.body();
@@ -84,15 +88,13 @@ public class BlogMessage {
             wl.addTags("font");
             wl.addAttributes("font", "size");
             wl.addAttributes("font", "color");
-            String safe = Jsoup.clean(body.html(),wl);
+            String safe = Jsoup.clean(body.html(), wl);
             content = safe;
-            
-        } else if(clearTextPart!=null){
-        	content = (String) clearTextPart.getContent();
-        }
-		return content;
-	}
 
-	
-	
+        } else if (clearTextPart != null) {
+            content = (String) clearTextPart.getContent();
+        }
+        return content;
+    }
+
 }

@@ -25,7 +25,7 @@ public class BlogMessageFetchScheduler {
 
 	Logger log = Logger.getLogger(BlogMessageFetchScheduler.class.getName());
 
-	@Schedule(second = "0", minute = "0", hour = "*/6")
+	@Schedule(second = "0", minute = "0", hour = "*/6", persistent = false)
 	public void fetchMessages() {
 		try {
 			log.log(Level.INFO, "getting blog msgs");

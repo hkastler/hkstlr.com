@@ -2,13 +2,12 @@ package com.hkstlr.app.boundary;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.DependsOn;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -18,7 +17,8 @@ import javax.mail.Message;
 import com.hkstlr.app.control.Config;
 import com.hkstlr.app.control.EmailReader;
 import com.hkstlr.app.entities.BlogMessage;
-import javax.ejb.DependsOn;
+import java.io.IOException;
+import javax.mail.MessagingException;
 
 @ApplicationScoped
 @Named
@@ -28,7 +28,7 @@ public class Index {
     private List<BlogMessage> msgs = new ArrayList<>();
     private static Logger log = Logger.getLogger(Index.class.getName());
     Setup setup;
-    
+
     @Inject
     private Config config;
 
@@ -38,8 +38,8 @@ public class Index {
 
     @PostConstruct
     void init() {
-    	
-    	log.log(Level.INFO, "setup:" + config.isSetup());
+
+        log.log(Level.INFO, "setup:{0}", config.isSetup());
         if (config.isSetup()) {
             log.log(Level.INFO, "fetching");
             fetchAndSetBlogMessages();
@@ -57,33 +57,27 @@ public class Index {
         for (Message msg : er.getImapEmails()) {
             try {
                 msgs.add(new BlogMessage(msg));
-            } catch (Exception e) {
+            } catch (IOException | MessagingException e) {
                 log.log(Level.WARNING, "", e);
-                continue;
             }
         }
 
         er.closeStore();
 
         log.log(Level.INFO, "sorting");
-        Collections.sort(msgs, new Comparator<BlogMessage>() {
-            public int compare(BlogMessage o1, BlogMessage o2) {
-                return o2.getCreateDate().compareTo(o1.getCreateDate());
-            }
-        });
+        Collections.sort(msgs, (BlogMessage o1, BlogMessage o2)
+                -> o2.getCreateDate().compareTo(o1.getCreateDate()));
     }
 
-    
-
     public Config getConfig() {
-		return config;
-	}
+        return config;
+    }
 
-	public void setConfig(Config config) {
-		this.config = config;
-	}
+    public void setConfig(Config config) {
+        this.config = config;
+    }
 
-	public List<BlogMessage> getMsgs() {
+    public List<BlogMessage> getMsgs() {
         return msgs;
     }
 
@@ -98,16 +92,16 @@ public class Index {
     public void setSetup(Setup setup) {
         this.setup = setup;
     }
-    
+
     @Produces
     public String view() {
-    	
-    	String template = "view.xhtml";
-    	if(!config.isSetup()) {
-    		template = "setup/index.xhtml";
-    	}
-    	
-    	return template;
+
+        String template = "view.xhtml";
+        if (!config.isSetup()) {
+            template = "setup/index.xhtml";
+        }
+
+        return template;
     }
 
 }
