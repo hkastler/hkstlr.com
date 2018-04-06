@@ -61,7 +61,7 @@ public class BlogMessage {
         this.body = body;
     }
 
-    public String processMultipart(Message msg) throws IOException, MessagingException {
+    private String processMultipart(Message msg) throws IOException, MessagingException {
         Multipart multipart = (Multipart) msg.getContent();
         BodyPart clearTextPart = null;
         BodyPart htmlTextPart = null;
