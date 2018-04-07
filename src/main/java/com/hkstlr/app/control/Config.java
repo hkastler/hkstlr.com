@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
 
 /**
  *
@@ -50,7 +49,7 @@ public class Config {
         this.props = props;
     }
 
-    @Produces
+    
     public boolean isSetup() {
         try {
             return this.getProps().containsKey("username") && this.getProps().containsKey("password")

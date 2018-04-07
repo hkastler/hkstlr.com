@@ -3,6 +3,8 @@ package com.hkstlr.app.boundary;
 import com.hkstlr.app.control.Config;
 
 import javax.enterprise.inject.Model;
+import javax.enterprise.inject.Produces;
+
 import com.hkstlr.app.entities.User;
 import javax.inject.Inject;
 
@@ -52,6 +54,11 @@ public class Setup {
 
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    @Produces
+    public boolean isSetup() {
+    	return config.isSetup();
     }
 
 }

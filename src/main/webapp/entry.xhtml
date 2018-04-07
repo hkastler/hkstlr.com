@@ -1,0 +1,37 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <!-- Page Content -->
+    
+    <ui:define name="content">
+    
+	    <!-- Title -->
+	    <h3 class="mt-4">
+	       
+	            <h:outputText value="#{index.msgMap[request.getQueryString()].subject}" />
+	        
+	    </h3>
+	
+	    <p>
+	        <!-- Date/Time --> 
+	        Posted on                     
+	        <h:outputFormat value="#{index.msgMap[request.getQueryString()].createDate}" >                            
+	            <f:convertDateTime dateStyle="default"
+	                               type="both"/>
+	        </h:outputFormat>                        
+	        
+	    </p>
+	    <!-- Post Content -->
+	    <p>
+	       
+	    
+        <h:outputText 
+            value="#{index.msgMap[request.getQueryString()].body}"
+            escape="false"/>
+    
+    	</p>
+    </ui:define>    
+    <!-- /.container -->
+</ui:composition>
