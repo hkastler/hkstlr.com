@@ -10,14 +10,16 @@
         <a href="entry.xhtml?#{msg.href}">
             <h:outputText value="#{msg.subject}" />
         </a>
+       
     </h3>
 
     <p>
         <!-- Date/Time --> 
-        Posted on                     
+        Posted on 
+                 
         <h:outputFormat value="#{msg.createDate}" >                            
-            <f:convertDateTime dateStyle="default"
-                               type="both"/>
+            <f:convertDateTime type="both"
+                               timeZone="#{TimeZone.getDefault()} "/>
         </h:outputFormat>                        
         
     </p>

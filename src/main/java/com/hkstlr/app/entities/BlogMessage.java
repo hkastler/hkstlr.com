@@ -1,11 +1,16 @@
 package com.hkstlr.app.entities;
 
-import com.hkstlr.app.control.DateFormatter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 
 import javax.mail.BodyPart;
+import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -16,12 +21,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 
+import com.hkstlr.app.control.DateFormatter;
+import com.hkstlr.app.control.StringChanger;
+
 public class BlogMessage {
 
     private Date createDate;
     private String subject;
     private String href;
     private String body;
+    private String headers;
 
     public BlogMessage() {
         //no-arg
@@ -40,6 +49,7 @@ public class BlogMessage {
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
         this.href = createAnchorBase(Integer.MAX_VALUE);
+        this.headers = messageHeadersToKeyValue(msg);
     }
     
     public BlogMessage(Message msg, Integer numberOfWordsInUrl) throws MessagingException, IOException {
@@ -48,7 +58,9 @@ public class BlogMessage {
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
         this.href = createAnchorBase(numberOfWordsInUrl);
+        this.headers = messageHeadersToKeyValue(msg);
     }
+    
 
     public Date getCreateDate() {
         return createDate;
@@ -82,7 +94,37 @@ public class BlogMessage {
         this.href = href;
     }
     
-    private String processMultipart(Message msg) throws IOException, MessagingException {
+    /**
+	 * @return the headers
+	 */
+	public String getHeaders() {
+		return headers;
+	}
+
+	/**
+	 * @param headers the headers to set
+	 */
+	public void setHeaders(String headers) {
+		this.headers = headers;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private String messageHeadersToKeyValue(Message message) {
+		
+        Enumeration<Header> allHeaders = null;
+        try {
+            allHeaders = message.getAllHeaders();
+        } catch (MessagingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        StringBuilder hdrs = new StringBuilder();
+        Collections.list(allHeaders).stream()
+                .forEach(h -> hdrs.append((h.getName().toString() + ": " + h.getValue().toString() + "\n")));
+		return hdrs.toString();
+	}
+
+	private String processMultipart(Message msg) throws IOException, MessagingException {
         Multipart multipart = (Multipart) msg.getContent();
         BodyPart clearTextPart = null;
         BodyPart htmlTextPart = null;
@@ -154,38 +196,11 @@ public class BlogMessage {
         } // No title or text, so instead we will use the items date
         // in YYYYMMDD format as the base anchor
         else {
-            
-            base.append(DateFormatter.format8chars.format(this.createDate));
+        	 
+            base.append(new DateFormatter(this.createDate).format8chars());
         }
 
         return base.toString();
-    }
-
-    private static class StringChanger {
-
-        public StringChanger() {
-        }
-
-        /**
-         * Replaces occurrences of non-alphanumeric characters with a supplied
-         * char.
-         *
-         * @param str
-         * @param subst
-         * @return
-         */
-        public static String replaceNonAlphanumeric(String str, char subst) {
-            StringBuilder ret = new StringBuilder(str.length());
-            char[] testChars = str.toCharArray();
-            for (int i = 0; i < testChars.length; i++) {
-                if (Character.isLetterOrDigit(testChars[i])) {
-                    ret.append(testChars[i]);
-                } else {
-                    ret.append(subst);
-                }
-            }
-            return ret.toString();
-        }
     }
 
 }

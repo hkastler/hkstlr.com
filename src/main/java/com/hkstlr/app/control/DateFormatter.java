@@ -14,9 +14,12 @@
  */
 package com.hkstlr.app.control;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  *
@@ -28,37 +31,80 @@ public class DateFormatter {
     /**
      * yyyy MMM dd HH:mm
      */
-    public static final DateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm");
+    public static final DateTimeFormatter  sdf = DateTimeFormatter.ofPattern("yyyy MMM dd HH:mm");
     
     /**
      * yyyy
      */
-    public static final DateFormat yearFormat = new SimpleDateFormat("yyyy");
+    public static final DateTimeFormatter yearFormat = DateTimeFormatter.ofPattern("yyyy");
     
     /**
      * MM
      */
-    public static final DateFormat monthFormat = new SimpleDateFormat("MM");
-    public static final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-    public static final DateFormat dayFormat = new SimpleDateFormat("d");
-    public static final DateFormat format8chars = new SimpleDateFormat("YYYYMMDD");
-    public static final DateFormat yearMonthFormat = new SimpleDateFormat("yyyyMMM");
+    public static final DateTimeFormatter monthFormat = DateTimeFormatter.ofPattern("MM");
+    public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
+    public static final DateTimeFormatter dayFormat = DateTimeFormatter.ofPattern("d");
+    
+    private static final DateTimeFormatter format8chars = DateTimeFormatter.ofPattern("YYYYMMdd");
+    public String format8chars() {
+    	
+    	String[] aryDate = this.date.toString().trim().split(" ");
+    	return DateFormatter.format8chars.format(
+				LocalDateTime.ofInstant(this.dateInstant, 
+						ZoneId.of(TimeZone.getTimeZone(aryDate[aryDate.length-2].toString().trim()).getID())
+				));
+    }
+    
+    public static final DateTimeFormatter yearMonthFormat = DateTimeFormatter.ofPattern("yyyyMMM");
     
     /**
      * yyyy-MM-dd'T'HH:mm:ss.SSSXXX
      * thanks to https://github.com/jarrodhroberson/Stack-Overflow/blob/master/src/main/java/com/stackoverflow/Q2597083.java
      */
-    public static final DateFormat jsFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    public static final DateTimeFormatter jsFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
     
-    public static final DateFormat datePickerFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     
-    public static DateFormat localeDefaultDateFormat(Locale currentLocale) {
-        return DateFormat.getDateInstance(DateFormat.SHORT ,currentLocale);
+    public static final DateTimeFormatter datePickerFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    
+    private Date date;
+    private Instant dateInstant;
+    
+    public DateFormatter() {
+        
     }
+
+    public DateFormatter(Date date) {
+		super();
+		this.date = date;
+		this.dateInstant = date.toInstant();
+	}
     
-    
-    private DateFormatter() {
-        //constructor
-    }
+	public DateFormatter(Date date, Instant dateInstant) {
+		super();
+		this.date = date;
+		this.dateInstant = dateInstant;
+	}
+
+
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+
+	public Instant getDateInstant() {
+		return dateInstant;
+	}
+
+
+	public void setDateInstant(Instant dateInstant) {
+		this.dateInstant = dateInstant;
+	}
+	
+	
 
 }

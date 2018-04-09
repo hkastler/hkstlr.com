@@ -26,8 +26,8 @@ import com.hkstlr.app.entities.BlogMessage;
 @Named
 @DependsOn(value = "config")
 public class Index {
-
-    private List<BlogMessage> msgs = new ArrayList<>();
+	
+	private List<BlogMessage> msgs = new ArrayList<>();
     private Map<String,BlogMessage> msgMap = new LinkedHashMap<>();
     private static Logger log = Logger.getLogger(Index.class.getName());
     Setup setup;
@@ -56,12 +56,12 @@ public class Index {
         }
 
         EmailReader er = new EmailReader(config.getProps());
-
+       
         for (Message msg : er.getImapEmails()) {
             try {
                 BlogMessage bmsg = new BlogMessage(msg);
                 msgs.add(bmsg);
-                msgMap.put(bmsg.getHref(), bmsg);
+                
             } catch (IOException | MessagingException e) {
                 log.log(Level.WARNING, "", e);
             }
@@ -72,6 +72,8 @@ public class Index {
         log.log(Level.INFO, "sorting");
         Collections.sort(msgs, (BlogMessage o1, BlogMessage o2)
                 -> o2.getCreateDate().compareTo(o1.getCreateDate()));
+        msgs.forEach(bmsg ->
+                msgMap.put(bmsg.getHref(), bmsg));
     }
 
     public Config getConfig() {
@@ -98,6 +100,19 @@ public class Index {
         this.msgMap = msgMap;
     }
     
+    @Produces
+    public int listIndexByHref(String href) {
+    	int index = 0;
+    	for ( Map.Entry<String,BlogMessage> e : msgMap.entrySet() ) {
+    	    String key = e.getKey();
+    	    //BlogMessage val = e.getValue();
+    	    if(key.equals(href)) {
+    	    	break;
+    	    }
+    	    index++;
+    	}
+    	return index;
+    }
     
 
     public Setup getSetup() {
@@ -111,6 +126,7 @@ public class Index {
     @Produces
     public String view() {
 
+    	
         String template = "view.xhtml";
         if (!config.isSetup()) {
             template = "setup/index.xhtml";

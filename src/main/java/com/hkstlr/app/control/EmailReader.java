@@ -138,6 +138,7 @@ public class EmailReader {
             Message msgs[] = folder.search(searchTerm);
             FetchProfile fp = new FetchProfile();
             fp.add(FetchProfile.Item.ENVELOPE);
+           
 
             folder.fetch(msgs, fp);
             // inbox.search(arg0, arg1)
