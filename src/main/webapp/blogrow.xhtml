@@ -15,12 +15,9 @@
 
     <p>
         <!-- Date/Time --> 
-        Posted on 
+        Posted on #{msg.createDate}
                  
-        <h:outputFormat value="#{msg.createDate}" >                            
-            <f:convertDateTime type="both"
-                               timeZone="#{TimeZone.getDefault()} "/>
-        </h:outputFormat>                        
+                              
         
     </p>
     <!-- Post Content -->

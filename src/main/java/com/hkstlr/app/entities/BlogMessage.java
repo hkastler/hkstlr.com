@@ -1,9 +1,6 @@
 package com.hkstlr.app.entities;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
@@ -28,8 +25,8 @@ public class BlogMessage {
 
     private Date createDate;
     private String subject;
-    private String href;
     private String body;
+    private String href;    
     private String headers;
 
     public BlogMessage() {
@@ -177,7 +174,7 @@ public class BlogMessage {
         }
 
         if (base.length() > 0) {
-            // Use only the first 7 words
+            
             StringTokenizer toker = new StringTokenizer(base.toString());
             StringBuilder tmp = new StringBuilder();
             int count = 0;

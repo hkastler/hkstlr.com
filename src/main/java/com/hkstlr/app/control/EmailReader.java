@@ -57,7 +57,7 @@ public class EmailReader {
         int msgCount = 0;
         if (!store.isConnected()) {
             try {
-                connectToStore();
+                storeConnect();
 
                 Folder blogBox = store.getFolder(props.getProperty("folderName"));
                 if (!blogBox.isOpen()) {
@@ -77,7 +77,7 @@ public class EmailReader {
         Message msgs[];
         try {
             if (!store.isConnected()) {
-                connectToStore();
+            	storeConnect();
             }
 
             Folder blogBox = store.getFolder(props.getProperty("folderName"));
@@ -87,8 +87,8 @@ public class EmailReader {
             }
 
             try {
-                msgs = blogBox.getMessages();
-                return msgs;
+               
+                return blogBox.getMessages();
 
             } catch (MessagingException e) {
                 log.log(Level.WARNING, "", e);
@@ -102,7 +102,7 @@ public class EmailReader {
 
     }
     
-    public void connectToStore(){
+    public void storeConnect(){
         try {
             store.connect(props.getProperty("mail.imap.host"),
                     props.getProperty("username"),
@@ -112,7 +112,7 @@ public class EmailReader {
         }
     }
 
-    public void closeStore() {
+    public void storeClose() {
         try {
             this.store.close();
         } catch (MessagingException e) {

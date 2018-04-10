@@ -16,10 +16,7 @@
 
 		<p>
 			<!-- Date/Time -->
-			Posted on			
-			<h:outputFormat value="#{msg.createDate}">
-				<f:convertDateTime dateStyle="full" type="both" />
-			</h:outputFormat>
+			Posted on #{msg.createDate}
 
 		</p>
 		<!-- Post Content -->
@@ -29,19 +26,17 @@
 		</p>
 		<p>
 			<ui:fragment rendered="#{msgIndex gt 0}">
-				<ui:param name="prevMsg" value="#{index.msgs.get(msgIndex-1)}"/>
-				<a href="entry.xhtml?#{prevMsg.href}" class="btn btn-info"> <h:outputText
-						value="&lt; #{prevMsg.subject}..." />
+				<ui:param name="aMsg" value="#{index.msgs.get(msgIndex-1)}"/>
+				<a href="entry.xhtml?#{aMsg.href}" class="btn btn-info"> <h:outputText
+						value="&lt; #{aMsg.subject.substring(0, index.min(15,aMsg.subject.length()))}..." />
 				</a>
 				
 			</ui:fragment>
-			<ui:fragment rendered="#{msgIndex lt index.msgs.size()-1}">
-				
-				<ui:param name="nextMsg" value="#{index.msgs.get(msgIndex+1)}"/>
-				<a href="entry.xhtml?#{nextMsg.href}" class="btn btn-info"> 
+			<ui:fragment rendered="#{msgIndex lt index.msgs.size()-1}">				
+				<ui:param name="aMsg" value="#{index.msgs.get(msgIndex+1)}"/>
+				<a href="entry.xhtml?#{aMsg.href}" class="btn btn-info"> 
 				<h:outputText
-						value="#{nextMsg.subject}... &gt;" />
-						
+						value="#{aMsg.subject.substring(0, index.min(15,aMsg.subject.length()))}... &gt;" />
 				</a>
 			</ui:fragment>
 		</p>

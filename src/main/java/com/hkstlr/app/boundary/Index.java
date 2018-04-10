@@ -10,8 +10,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.AccessTimeout;
+import javax.ejb.Asynchronous;
 import javax.ejb.DependsOn;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,6 +37,8 @@ public class Index {
 
     @Inject
     private Config config;
+    
+    
 
     public Index() {
         // no arg contructor
@@ -45,10 +50,13 @@ public class Index {
         log.log(Level.INFO, "setup:{0}", config.isSetup());
         if (config.isSetup()) {
             log.log(Level.INFO, "fetching");
+            
             fetchAndSetBlogMessages();
         }
     }
 
+    @AccessTimeout(60000)//default timeunit is TimeUnit.MILLISECONDS
+    @Asynchronous    
     public void fetchAndSetBlogMessages() {
 
         if (!config.isSetup()) {
@@ -67,7 +75,7 @@ public class Index {
             }
         }
 
-        er.closeStore();
+        er.storeClose();
 
         log.log(Level.INFO, "sorting");
         Collections.sort(msgs, (BlogMessage o1, BlogMessage o2)
@@ -103,6 +111,7 @@ public class Index {
     @Produces
     public int listIndexByHref(String href) {
     	int index = 0;
+    	
     	for ( Map.Entry<String,BlogMessage> e : msgMap.entrySet() ) {
     	    String key = e.getKey();
     	    //BlogMessage val = e.getValue();
@@ -121,6 +130,11 @@ public class Index {
 
     public void setSetup(Setup setup) {
         this.setup = setup;
+    }
+    
+    
+    public int min(int a, int b) {
+    	return Math.min(a, b);
     }
 
     @Produces
