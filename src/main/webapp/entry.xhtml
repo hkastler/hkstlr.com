@@ -8,23 +8,9 @@
 	<ui:param name="msgIndex" value="#{index.listIndexByHref(msg.href)}" />
 	<ui:define name="title">#{index.config.props["site.name"]} - #{msg.subject}</ui:define>
 	<ui:define name="content">
-
-		<!-- Title -->
-		<h3 class="mt-4">
-			<h:outputText value="#{msg.subject}" />
-		</h3>
-
-		<p>
-			<!-- Date/Time -->
-			Posted on #{msg.createDate}
-
-		</p>
-		<!-- Post Content -->
-		<p>
-			<h:outputText value="#{msg.body}" escape="false" />
-
-		</p>
-		<p>
+		<ui:include src="blogpost.xhtml"/>
+		
+		<div>
 			<ui:fragment rendered="#{msgIndex gt 0}">
 				<ui:param name="aMsg" value="#{index.msgs.get(msgIndex-1)}"/>
 				<a href="entry.xhtml?#{aMsg.href}" class="btn btn-info"> <h:outputText
@@ -39,7 +25,8 @@
 						value="#{aMsg.subject.substring(0, index.min(15,aMsg.subject.length()))}... &gt;" />
 				</a>
 			</ui:fragment>
-		</p>
+		</div>
+		
 	</ui:define>
 	<!-- /.container -->
 </ui:composition>

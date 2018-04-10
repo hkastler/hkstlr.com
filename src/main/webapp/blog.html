@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Microdata example - blog article</title>
+</head>
+
+<body itemscope itemtype="https://schema.org/WebPage">
+<!-- Accessibility levels -->
+  <meta itemprop="accessibilityControl" content="fullKeyboardControl">
+  <meta itemprop="accessibilityControl" content="fullMouseControl">
+  <meta itemprop="accessibilityHazard" content="noFlashingHazard">
+  <meta itemprop="accessibilityHazard" content="noMotionSimulationHazard">
+  <meta itemprop="accessibilityHazard" content="noSoundHazard">
+  <meta itemprop="accessibilityAPI" content="ARIA">
+
+<!-- Header -->
+  <header itemscope itemtype="https://schema.org/Organization">
+    <h2 itemprop="name">
+      <a rel="home" itemprop="url" href="#">ExampleCorp Ltd</a>
+    </h2>
+    <meta itemprop="logo" content="https://example.com/img/examplecorp-logo.png">
+    <ul>
+      <li>
+        <a rel="external" itemprop="sameAs" href="#">Follow us on Facebook</a>
+      </li>
+      <li>
+        <a rel="external" itemprop="sameAs" href="#">Follow us on Google+</a>
+      </li>
+      <li>
+        <a rel="external" itemprop="sameAs" href="#">Follow us on Twitter</a>
+      </li>
+    </ul>
+    <p itemprop="telephone">+44 (0)0000 000000</p>
+  </header>
+
+<!-- Navigation -->
+  <nav aria-label="Navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+    <ul>
+      <li>
+        <a itemprop="url" href="#">Products</a>
+      </li>
+      <li>
+        <a itemprop="url" href="#">Services</a>
+      </li>
+      <li>
+        <a itemprop="url" href="#">About</a>
+      </li>
+      <li>
+        <a itemprop="url" href="#">Contact</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main aria-label="Main content" itemscope itemtype="https://schema.org/Blog">
+
+<!-- Breadcrumbs -->
+    <nav aria-label="Breadcrumb navigation">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="#"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="#"><span itemprop="name">Blog</span></a>
+          <meta itemprop="position" content="2">
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <b itemprop="item"><span itemprop="name">Blog article title</span></b>
+          <meta itemprop="position" content="3">
+        </li>
+      </ol>
+    </nav>
+
+<!-- Article -->
+    <article itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+      <meta itemprop="mainEntityOfPage" content="url-of-this-article.html">
+
+      <h1 itemprop="name headline">Blog article title</h1>
+
+      <p>
+        <time datetime="2015-03-26T10:43:39Z" itemprop="datePublished">26 Mar 2015</time>
+        <meta itemprop="dateModified" content="2017-04-11T12:52:01Z">
+      </p>
+
+      <figure itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <img itemprop="url" alt="Alt text" src="https://example.com/img/example1.jpg">
+        <meta itemprop="width" content="640">
+        <meta itemprop="height" content="480">
+        <figcaption itemprop="caption">An example image caption.</figcaption>
+      </figure>
+
+      <div itemprop="description">
+        <p><strong>Ex graeci civibus eleifend vim, mel et utroque fastidii.</strong></p>
+      </div>
+
+      <div itemprop="articleBody">
+        <p>Lorem ipsum dolor sit amet, quo epicuri volutpat no. Causae option accusamus in est.</p>
+        <p itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+          <img itemprop="url" alt="Alt text" src="https://example.com/img/example2.jpg">
+          <meta itemprop="width" content="640">
+          <meta itemprop="height" content="360">
+        </p>
+        <h3>Ne sea soluta voluptatum</h3>
+        <p>Timeam mentitum an nam. Mei ne prima perfecto adversarium.</p>
+        <p itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+          <img itemprop="url" alt="Alt text" src="https://example.com/img/example3.jpg">
+          <meta itemprop="width" content="640">
+          <meta itemprop="height" content="240">
+        </p>
+        <p>Inermis indoctum vis in, has soleat complectitur te.</p>
+      </div>
+
+      <footer>
+        By:
+        <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <a rel="author" itemprop="url" href="#" title="View author biography">
+            <span itemprop="name">Aaron A. Aardvark</span>
+          </a>
+          <meta itemprop="jobTitle" content="Director">
+          <meta itemprop="worksFor" content="ExampleCorp Ltd">
+        </span>
+        <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+          <meta itemprop="name" content="ExampleCorp Ltd">
+          <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="https://example.com/img/examplecorp-logo.png">
+            <meta itemprop="width" content="320">
+            <meta itemprop="height" content="60">
+          </span>
+        </span>
+        <span role="separator">|</span>
+        Tags:
+        <span itemprop="keywords">
+          <a rel="category tag" href="#" title="View articles in this category">Curla Wurla</a>
+          <a rel="category tag" href="#" title="View articles in this category">Huly Hoops</a>
+        </span>
+        <span role="separator">|</span>
+        Comments:
+        <a href="#" title="View article comments" itemprop="discussionUrl">
+          <span itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
+            <meta itemprop="interactionType" content="https://schema.org/CommentAction">
+            <span itemprop="userInteractionCount">3</span>
+          </span>
+        </a>
+      </footer>
+
+      <aside itemscope itemtype="https://schema.org/WPAdBlock">
+        <h6>Advertisements</h6>
+        <a rel="external" href="ad-target-1.html" itemprop="url">
+          <img itemprop="image" alt="Ad Example 1" src="ad-1.png" width="300" height="250">
+        </a>
+        <a rel="external" href="ad-target-2.html" itemprop="url">
+          <img itemprop="image" alt="Ad Example 2" src="ad-2.png" width="300" height="250">
+        </a>
+      </aside>
+
+      <section>
+        <h3>Comments</h3>
+        <ol>
+          <li>
+            <article itemscope itemtype="https://schema.org/Comment">
+              <h4 itemprop="author" itemscope itemtype="https://schema.org/Person">
+                <span itemprop="name">Joe Q. Public</span>
+              </h4>
+              <p>
+                <time datetime="2015-01-26T16:55:03Z" itemprop="dateCreated">26/03/15 16:55</time>
+              </p>
+              <div itemprop="text">
+                <p>Inermis indoctum vis in, has soleat complectitur te.</p>
+              </div>
+            </article>
+          </li>
+        </ol>
+      </section>
+
+    </article>
+
+  </main>
+
+<!-- Secondary Content -->
+  <aside>
+
+    <section itemscope itemtype="https://schema.org/WebSite">
+      <h3>Search</h3>
+      <meta itemprop="url" content="https://example.com/">
+      <form itemprop="potentialAction" itemscope itemtype="https://schema.org/SearchAction">
+        <meta itemprop="target" content="https://example.com/?q={q}">
+        <input itemprop="query-input" name="q" type="search">
+        <button>Go</button>
+      </form>
+    </section>
+
+    <section>
+      <h3>Latest blog articles</h3>
+      <ol>
+        <li>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <h4 itemprop="name headline">
+              <a itemprop="mainEntityOfPage url" href="#">Blog example title 1</a>
+            </h4>
+            <meta itemprop="author" content="Aaron A. Aardvark">
+            <meta itemprop="datePublished" content="2015-03-23T15:54:12Z">
+            <meta itemprop="dateModified" content="2016-01-11T10:24:25Z">
+            <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+              <meta itemprop="name" content="ExampleCorp Ltd">
+              <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                <meta itemprop="url" content="https://example.com/img/examplecorp-logo.png">
+                <meta itemprop="width" content="320">
+                <meta itemprop="height" content="60">
+              </span>
+            </span>
+            <span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+              <meta itemprop="url" content="https://example.com/img/example4.jpg">
+              <meta itemprop="width" content="640">
+              <meta itemprop="height" content="480">
+            </span>
+          </article>
+        </li>
+        <li>
+          <article itemscope itemtype="https://schema.org/BlogPosting">
+            <h4 itemprop="name headline">
+              <a itemprop="mainEntityOfPage url" href="#">Blog example title 2</a>
+            </h4>
+            <meta itemprop="author" content="Aaron A. Aardvark">
+            <meta itemprop="datePublished" content="2014-12-23T19:32:41Z">
+            <meta itemprop="dateModified" content="2014-12-23T19:32:41Z">
+            <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+              <meta itemprop="name" content="ExampleCorp Ltd">
+              <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                <meta itemprop="url" content="https://example.com/img/examplecorp-logo.png">
+                <meta itemprop="width" content="320">
+                <meta itemprop="height" content="60">
+              </span>
+            </span>
+            <span itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+              <meta itemprop="url" content="https://example.com/img/example5.jpg">
+              <meta itemprop="width" content="640">
+              <meta itemprop="height" content="480">
+            </span>
+          </article>
+        </li>
+      </ol>
+    </section>
+
+  </aside>
+
+<!-- Footer -->
+  <footer>
+    <small>
+      ©2017
+      <span itemscope itemtype="https://schema.org/PostalAddress">
+        <span itemprop="name">ExampleCorp Ltd</span>.
+          Registered in England and Wales no. 0000000.<br>
+          Registered Office:
+          <span itemprop="streetAddress">Anon Towers, 88 Example Road</span>,
+          <span itemprop="addressLocality">Exampleton</span>,
+          <span itemprop="addressRegion">Exampleshire</span>
+          <span itemprop="postalCode">AZ0 0AZ</span>.
+      </span>
+    </small>
+  </footer>
+
+</body>
+</html>

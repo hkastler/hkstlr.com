@@ -14,6 +14,7 @@ import javax.mail.Multipart;
 import javax.validation.constraints.NotNull;
 
 import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
@@ -38,6 +39,7 @@ public class BlogMessage {
         this.createDate = createDate;
         this.subject = subject;
         this.body = body;
+        this.href = createHref(Integer.MAX_VALUE);
     }
 
     public BlogMessage(Message msg) throws MessagingException, IOException {
@@ -45,7 +47,7 @@ public class BlogMessage {
         this.createDate = msg.getReceivedDate();
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
-        this.href = createAnchorBase(Integer.MAX_VALUE);
+        this.href = createHref(Integer.MAX_VALUE);
         this.headers = messageHeadersToKeyValue(msg);
     }
     
@@ -54,7 +56,7 @@ public class BlogMessage {
         this.createDate = msg.getReceivedDate();
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
-        this.href = createAnchorBase(numberOfWordsInUrl);
+        this.href = createHref(numberOfWordsInUrl);
         this.headers = messageHeadersToKeyValue(msg);
     }
     
@@ -140,16 +142,18 @@ public class BlogMessage {
         }
         if (htmlTextPart != null) {
             String html = (String) htmlTextPart.getContent();
+            
             Document doc = Jsoup.parse(html);
-            Element body = doc.body();
+            Element body = doc.body();            
 
             Whitelist wl = Whitelist.relaxed();
             wl.addAttributes("div", "style");
             wl.addTags("font");
             wl.addAttributes("font", "size");
             wl.addAttributes("font", "color");
+            
             String safe = Jsoup.clean(body.html(), wl);
-            content = safe;
+            content = StringUtil.normaliseWhitespace(safe);
 
         } else if (clearTextPart != null) {
             content = (String) clearTextPart.getContent();
@@ -158,9 +162,9 @@ public class BlogMessage {
     }
 
     /**
-     * Create anchor for blog, based on title or text
+     * Create href for blog, based on title or text
      */
-    private String createAnchorBase(@NotNull Integer numberOfWordsInUrl) {
+    private String createHref(@NotNull Integer numberOfWordsInUrl) {
 
         String TITLE_SEPARATOR = "-"; 
         // Use title (minus non-alphanumeric characters)
@@ -168,9 +172,9 @@ public class BlogMessage {
         if (!this.subject.isEmpty()) {
             base.append(StringChanger.replaceNonAlphanumeric(this.subject, ' ').trim());
         }
-        // If we still have no base, then try text (minus non-alphanumerics)
-        if (base.length() == 0 && !body.isEmpty()) {
-            base.append(StringChanger.replaceNonAlphanumeric(body, ' ').trim());
+        // If we still have no base, then try body (minus non-alphanumerics)
+        if (base.length() == 0 && !this.body.isEmpty()) {
+            base.append(StringChanger.replaceNonAlphanumeric(this.body, ' ').trim());
         }
 
         if (base.length() > 0) {

@@ -3,6 +3,7 @@ package com.hkstlr.app.boundary;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 
 import com.hkstlr.app.control.Config;
+import com.hkstlr.app.control.DateFormatter;
 import com.hkstlr.app.control.EmailReader;
 import com.hkstlr.app.entities.BlogMessage;
 
@@ -64,7 +66,9 @@ public class Index {
         }
 
         EmailReader er = new EmailReader(config.getProps());
-       
+        if(!msgs.isEmpty()) {
+        	msgs.clear();
+        }
         for (Message msg : er.getImapEmails()) {
             try {
                 BlogMessage bmsg = new BlogMessage(msg);
@@ -147,6 +151,11 @@ public class Index {
         }
 
         return template;
+    }
+    
+    public String jsFormat(Date date) {
+    	
+    	return new DateFormatter(date).formatjsFormat();
     }
 
 }

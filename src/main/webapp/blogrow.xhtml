@@ -5,25 +5,8 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
-    <!-- Title -->
-    <h3 class="mt-4">
-        <a href="entry.xhtml?#{msg.href}">
-            <h:outputText value="#{msg.subject}" />
-        </a>
-       
-    </h3>
-
-    <p>
-        <!-- Date/Time --> 
-        Posted on #{msg.createDate}
-                 
-                              
-        
-    </p>
-    <!-- Post Content -->
-    <p>
-        <h:outputText value="#{msg.body}" 
-                      escape="false" />
-    </p>
+    <ui:include src="blogpost.xhtml">
+		<ui:param name="isInList" value="true"/>
+	</ui:include>
     <hr/>
 </ui:composition>

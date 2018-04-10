@@ -21,10 +21,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.TimeZone;
 
+import javax.inject.Named;
+
 /**
  *
  * @author henry.kastler
  */
+@Named
 public class DateFormatter {
 
     
@@ -61,7 +64,15 @@ public class DateFormatter {
      * yyyy-MM-dd'T'HH:mm:ss.SSSXXX
      * thanks to https://github.com/jarrodhroberson/Stack-Overflow/blob/master/src/main/java/com/stackoverflow/Q2597083.java
      */
-    public static final DateTimeFormatter jsFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    public static final DateTimeFormatter jsFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+	public String formatjsFormat() {
+	    	
+	    	String[] aryDate = this.date.toString().trim().split(" ");
+	    	return DateFormatter.jsFormat.format(
+					LocalDateTime.ofInstant(this.dateInstant, 
+							ZoneId.of(TimeZone.getTimeZone(aryDate[aryDate.length-2].toString().trim()).getID())
+					));
+	    }
     
     
     public static final DateTimeFormatter datePickerFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
