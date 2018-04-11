@@ -1,16 +1,21 @@
 package com.hkstlr.app.boundary;
 
-import com.hkstlr.app.control.Config;
+import java.util.logging.Logger;
 
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
-
-import com.hkstlr.app.entities.User;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+
+import com.hkstlr.app.control.Config;
+import com.hkstlr.app.entities.User;
 
 @Model
 public class Setup {
 
+	private static final Logger logger = Logger.getLogger(Setup.class.getCanonicalName());
+	
     private User user = new User();
     private String folderName;
     private String action = "create";
@@ -20,17 +25,28 @@ public class Setup {
 
     @Inject
     Index index;
+    
+    @Inject
+    private Event<String> event;
+    
+    
 
     public Setup() {
         // jee needed constructor
     }
 
-    public void setup() {
+    public void setup()  {
         config.getProps().put("password", this.user.getPassword());
         config.getProps().put("folderName", this.folderName);
         config.getProps().put("username", this.user.getUsername());
-        index.fetchAndSetBlogMessages();
+        
+        event.fire("fetch");
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext. getApplication()
+                .getNavigationHandler().handleNavigation(facesContext, null, 
+                        "index");
     }
+    
 
     public String getFolderName() {
         return folderName;

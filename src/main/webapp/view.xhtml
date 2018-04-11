@@ -9,7 +9,10 @@
 
 
     <div class="panel panel-primary" id="entries">
-
+		<ui:fragment rendered="#{index.msgs.isEmpty()}">
+			Loading....
+			<meta http-equiv="refresh" content="10" />
+		</ui:fragment>
         <ui:repeat value="#{index.msgs}" var="msg">
             <ui:include src="blogrow.xhtml"/>
         </ui:repeat>

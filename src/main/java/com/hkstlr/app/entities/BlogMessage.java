@@ -49,6 +49,7 @@ public class BlogMessage {
         this.body = processMultipart(msg);
         this.href = createHref(Integer.MAX_VALUE);
         this.headers = messageHeadersToKeyValue(msg);
+        
     }
     
     public BlogMessage(Message msg, Integer numberOfWordsInUrl) throws MessagingException, IOException {

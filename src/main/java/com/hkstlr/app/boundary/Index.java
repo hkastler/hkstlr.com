@@ -7,11 +7,13 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.AccessTimeout;
 import javax.ejb.Asynchronous;
 import javax.ejb.DependsOn;
 import javax.enterprise.context.ApplicationScoped;
@@ -39,6 +41,9 @@ public class Index {
 
     @Inject
     private Config config;
+   
+    @Inject
+    Event<String> event;
     
     
 
@@ -51,28 +56,42 @@ public class Index {
 
         log.log(Level.INFO, "setup:{0}", config.isSetup());
         if (config.isSetup()) {
-            log.log(Level.INFO, "fetching");
-            
-            fetchAndSetBlogMessages();
+            log.log(Level.INFO, "fetching");            
+            event.fire("fetch");
         }
     }
 
-    @AccessTimeout(60000)//default timeunit is TimeUnit.MILLISECONDS
-    @Asynchronous    
-    public void fetchAndSetBlogMessages() {
+    @Asynchronous  
+    public void fetchAndSetBlogMessages(){
 
         if (!config.isSetup()) {
             return;
         }
-
+        Future<ArrayList<BlogMessage>> completableFuture;
+		try {
+			completableFuture = getBlogMessages();
+			this.msgs = completableFuture.get();
+		} catch (InterruptedException | ExecutionException e) {
+			log.log(Level.SEVERE, "error",e);
+		}
+        this.msgs.forEach(bmsg ->
+                this.msgMap.put(bmsg.getHref(), bmsg));
+    }
+    
+    
+    @Asynchronous 
+    public Future<ArrayList<BlogMessage>> getBlogMessages() throws InterruptedException {
+        CompletableFuture<ArrayList<BlogMessage>> completableFuture 
+          = new CompletableFuture<>();
+        ArrayList<BlogMessage> bmsgs = new ArrayList<>();
+        
         EmailReader er = new EmailReader(config.getProps());
-        if(!msgs.isEmpty()) {
-        	msgs.clear();
-        }
+        er.storeConnect();
+        
         for (Message msg : er.getImapEmails()) {
             try {
                 BlogMessage bmsg = new BlogMessage(msg);
-                msgs.add(bmsg);
+                bmsgs.add(bmsg);
                 
             } catch (IOException | MessagingException e) {
                 log.log(Level.WARNING, "", e);
@@ -80,12 +99,12 @@ public class Index {
         }
 
         er.storeClose();
-
-        log.log(Level.INFO, "sorting");
-        Collections.sort(msgs, (BlogMessage o1, BlogMessage o2)
+        
+        Collections.sort(bmsgs, (BlogMessage o1, BlogMessage o2)
                 -> o2.getCreateDate().compareTo(o1.getCreateDate()));
-        msgs.forEach(bmsg ->
-                msgMap.put(bmsg.getHref(), bmsg));
+        
+        completableFuture.complete(bmsgs);
+        return completableFuture;
     }
 
     public Config getConfig() {
