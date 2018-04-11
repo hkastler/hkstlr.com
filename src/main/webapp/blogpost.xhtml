@@ -10,7 +10,7 @@
 		<!-- Title -->
 		<h3 class="mt-4" id="msgSubject">
 		<ui:fragment rendered="#{isInList}">
-			<a href="entry.xhtml?#{msg.href}" itemprop="mainEntityOfPage url" >
+			<a href="entry/#{msg.href}" itemprop="mainEntityOfPage url" >
 				<div itemprop="name headline">
 					<h:outputText value="#{msg.subject}" />
 				</div>

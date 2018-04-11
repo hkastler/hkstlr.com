@@ -4,7 +4,10 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html">
 	<!-- Page Content -->
-	<ui:param name="msg" value="#{index.msgMap[request.getQueryString()]}" />
+	<ui:param name="msgKey" value="#{null ne request.getParameter('href')? request.getParameter('href'): request.getQueryString()}"/>
+	<ui:param name="msg" value="#{index.msgMap[msgKey]}" />
+	<ui:param name="baseHref" value="#{null ne request.getParameter('href')? '/entry/': 'entry.xhtml?'}"/>
+	
 	<ui:param name="msgIndex" value="#{index.listIndexByHref(msg.href)}" />
 	<ui:define name="title">#{index.config.props["site.name"]} - #{msg.subject}</ui:define>
 	<ui:define name="content">
@@ -13,14 +16,14 @@
 		<div>
 			<ui:fragment rendered="#{msgIndex gt 0}">
 				<ui:param name="aMsg" value="#{index.msgs.get(msgIndex-1)}"/>
-				<a href="entry.xhtml?#{aMsg.href}" class="btn btn-info"> <h:outputText
+				<a href="#{baseHref}#{aMsg.href}" class="btn btn-info"> <h:outputText
 						value="&lt; #{aMsg.subject.substring(0, index.min(15,aMsg.subject.length()))}..." />
 				</a>
 				
 			</ui:fragment>
 			<ui:fragment rendered="#{msgIndex lt index.msgs.size()-1}">				
 				<ui:param name="aMsg" value="#{index.msgs.get(msgIndex+1)}"/>
-				<a href="entry.xhtml?#{aMsg.href}" class="btn btn-info"> 
+				<a href="#{baseHref}#{aMsg.href}" class="btn btn-info"> 
 				<h:outputText
 						value="#{aMsg.subject.substring(0, index.min(15,aMsg.subject.length()))}... &gt;" />
 				</a>
