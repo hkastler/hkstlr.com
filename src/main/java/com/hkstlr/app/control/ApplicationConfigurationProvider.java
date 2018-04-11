@@ -31,9 +31,7 @@ public class ApplicationConfigurationProvider extends HttpConfigurationProvider 
 
 	private static final String INDEX_PATH = "/index.xhtml";
     private static final String ENTRY_PATH = "/entry.xhtml";
-    private static final String PARAMS_PATH = "/page/{page}/pageSize/{pageSize}";
     
-    @Override
     public Configuration getConfiguration(ServletContext context) {
         return ConfigurationBuilder.begin()
                 .addRule().perform(Log.message(Level.DEBUG, "rewrite in the app"))
