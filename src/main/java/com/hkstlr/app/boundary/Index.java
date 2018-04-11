@@ -56,7 +56,7 @@ public class Index {
 
         log.log(Level.INFO, "setup:{0}", config.isSetup());
         if (config.isSetup()) {
-            log.log(Level.INFO, "fetching");            
+                    
             event.fire("fetch");
         }
     }
@@ -67,15 +67,21 @@ public class Index {
         if (!config.isSetup()) {
             return;
         }
-        Future<ArrayList<BlogMessage>> completableFuture;
+        
+        log.log(Level.INFO, "fetching");    
 		try {
-			completableFuture = getBlogMessages();
-			this.msgs = completableFuture.get();
+			
+			ArrayList<BlogMessage> fm = getBlogMessages().get();
+			this.msgs.clear();
+			this.msgs = fm;
 		} catch (InterruptedException | ExecutionException e) {
 			log.log(Level.SEVERE, "error",e);
 		}
+		this.msgMap.clear();
         this.msgs.forEach(bmsg ->
                 this.msgMap.put(bmsg.getHref(), bmsg));
+        
+        
     }
     
     
@@ -135,7 +141,7 @@ public class Index {
     public int listIndexByHref(String href) {
     	int index = 0;
     	
-    	for ( Map.Entry<String,BlogMessage> e : msgMap.entrySet() ) {
+    	for ( Map.Entry<String,BlogMessage> e : this.msgMap.entrySet() ) {
     	    String key = e.getKey();
     	    //BlogMessage val = e.getValue();
     	    if(key.equals(href)) {
@@ -175,6 +181,11 @@ public class Index {
     public String jsFormat(Date date) {
     	
     	return new DateFormatter(date).formatjsFormat();
+    }
+    
+
+    public void goFetch() {
+    	 event.fire("fetch");
     }
 
 }
