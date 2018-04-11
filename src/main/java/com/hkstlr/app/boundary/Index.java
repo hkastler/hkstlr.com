@@ -74,6 +74,7 @@ public class Index {
 			ArrayList<BlogMessage> fm = getBlogMessages().get();
 			this.msgs.clear();
 			this.msgs = fm;
+			
 		} catch (InterruptedException | ExecutionException e) {
 			log.log(Level.SEVERE, "error",e);
 		}
