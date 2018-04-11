@@ -2,35 +2,43 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
-	
-	
+
+
 	<article itemprop="blogPost" itemscope="itemscope"
 		itemtype="https://schema.org/BlogPosting">
 		<meta itemprop="mainEntityOfPage" content="/#{msg.href}" />
 		<!-- Title -->
 		<h3 class="mt-4" id="msgSubject">
-		<ui:fragment rendered="#{isInList}">
-			<a href="entry/#{msg.href}" itemprop="mainEntityOfPage url" >
+			<ui:fragment rendered="#{isInList}">
+				<a href="entry/#{msg.href}" itemprop="mainEntityOfPage url">
+					<div itemprop="name headline">
+						<h:outputText value="#{msg.subject}" />
+					</div>
+				</a>
+			</ui:fragment>
+			<ui:fragment rendered="#{!isInList}">
 				<div itemprop="name headline">
 					<h:outputText value="#{msg.subject}" />
 				</div>
-			</a>
-		</ui:fragment>
-		<ui:fragment rendered="#{!isInList}">			
-			<div itemprop="name headline">
-				<h:outputText value="#{msg.subject}" />
-			</div>			
-		</ui:fragment>	
+			</ui:fragment>
 		</h3>
 		<div id="msgCreateDate">
 			<!-- Date/Time -->
 			Posted on
-			<time datetime="#{index.jsFormat(msg.createDate)}Z" itemprop="datePublished">#{msg.createDate}</time>
+			<time datetime="#{index.jsFormat(msg.createDate)}Z"
+				itemprop="datePublished">#{msg.createDate}</time>
 
 		</div>
-		<!-- Post Content -->
-		<div id="msgBody" itemprop="articleBody">
-			<h:outputText value="#{msg.body}" escape="false" />
-		</div>
+		<ui:fragment rendered="#{isInList}">
+			<div id="msgBodyBegin">
+				<h:outputText value="#{msg.body}" escape="false" />
+			</div>
+		</ui:fragment>
+		<ui:fragment rendered="#{!isInList}">
+			<!-- Post Content -->
+			<div id="msgBody" itemprop="articleBody">
+				<h:outputText value="#{msg.body}" escape="false" />
+			</div>
+		</ui:fragment>
 	</article>
 </ui:composition>
