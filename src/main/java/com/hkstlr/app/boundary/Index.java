@@ -82,7 +82,6 @@ public class Index {
         this.msgs.forEach(bmsg ->
                 this.msgMap.put(bmsg.getHref(), bmsg));
         
-        
     }
     
     
