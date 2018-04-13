@@ -6,10 +6,11 @@
 	
 	<ui:param name="msgKey"
 		value="#{null ne request.getParameter('href') ? request.getParameter('href'): request.getQueryString()}" />
-	<ui:param name="msg" value="#{index.msgMap[msgKey]}" />
+	<ui:param name="msgIndex" value="#{index.msgMap[msgKey]}" />	
+	<ui:param name="msg" value="#{index.msgs.get(msgIndex)}" />
 	<ui:param name="baseHref"
 		value="#{null ne request.getParameter('href') ? '/entry/': 'entry.xhtml?'}" />
-	<ui:param name="msgIndex" value="#{index.listIndexByHref(msg.href)}" />
+	
 	
 	<!-- Page Content -->
 	<ui:define name="title">#{index.config.props["site.name"]} - #{msg.subject}</ui:define>

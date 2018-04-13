@@ -17,11 +17,7 @@
                     <li class="list-group-item">
                         <a href="#{request.contextPath}/">Front Page</a>
                     </li>
-                    <li class="list-group-item" jsf:id="weblogSideNavLink" rendered="#{weblogBean.handle.length() gt 0}">
-                        <a value="#{request.contextPath}/#{weblogBean.handle}" 
-                           jsfc="h:outputLink" 
-                           jsf:id="weblogHome" >Weblog #{weblogBean.weblog.name}</a>
-                    </li>
+                    
                     <li class="list-group-item" jsf:id="loginSideNavLink" rendered="#{sessionScope.user eq null}">
                         <a value="#{request.contextPath}/login/" 
                            jsfc="h:outputLink" >Login</a>
@@ -41,38 +37,6 @@
         </div>
         </form>
         
-        <!-- Search Widget -->
-        <div class="card my-4" jsf:id="searchWidget" rendered="#{false}">
-            <h5 class="card-header">Search</h5>
-            <div class="card-block">
-                <form action="#{request.contextPath}/#{weblogBean.handle}/search">
-                <div class="input-group">
-                    <input name="q" type="text" class="form-control" placeholder="Search for..."/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary" type="submit">Go!</button>
-                    </span>
-                </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Categories Widget -->
-        <div class="card my-4" jsf:id="categoriesWidget" rendered="#{weblogBean.weblog.weblogCategories.size() gt 0}">
-            <h5 class="card-header">Categories</h5>
-            <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="list-group">
-                            <ui:repeat value="#{weblogBean.weblog.weblogCategories}"
-                                       var="category">
-                                <li class="list-group-item"><a href="#{request.contextPath}/#{weblogBean.handle}/category/#{category.name}">#{category.name}</a></li>
-                            </ui:repeat>                                    
-                        </ul>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
         
          <!-- Side Widget -->
          <div class="card my-4" jsf:id="calendar" rendered="#{weblogBean.weblog ne null}">
@@ -82,31 +46,7 @@
                               escape="false"/>
             </div>
         </div>
-        <!-- Side Widget -->
-        <div class="card my-4" jsf:id="linksWidget" rendered="#{weblogBean.bookmarks.size() gt 0}">
-            <h5 class="card-header">Links</h5>
-              <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="list-group">
-                            <ui:repeat value="#{weblogBean.bookmarks}"
-                                       var="bookmark">                                
-                                <li class="list-group-item"><a href="#{bookmark.url}" target="_blank">#{bookmark.name}</a></li>                                
-                            </ui:repeat>                                    
-                        </ul>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
         
-         <!-- Side Widget -->
-        <div class="card my-4" jsf:id="feeds" rendered="false">
-            <h5 class="card-header">Feeds</h5>
-            <div class="card-block">
-                
-            </div>
-        </div>
         
        
     </f:view>

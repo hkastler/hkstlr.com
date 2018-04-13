@@ -8,20 +8,23 @@
 		itemtype="https://schema.org/BlogPosting">
 		<meta itemprop="mainEntityOfPage" content="/#{msg.href}" />
 		<!-- Title -->
-		<h3 class="mt-4" id="msgSubject">
+		
 			<ui:fragment rendered="#{isInList}">
 				<a href="entry/#{msg.href}" itemprop="mainEntityOfPage url">
 					<div itemprop="name headline">
-						<h:outputText value="#{msg.subject}" />
+						<h4 class="mt-4" id="msgSubject"><h:outputText value="#{msg.subject}" /></h4>
 					</div>
 				</a>
 			</ui:fragment>
 			<ui:fragment rendered="#{!isInList}">
+			
 				<div itemprop="name headline">
-					<h:outputText value="#{msg.subject}" />
+					<h3 class="mt-4" id="msgSubject"><h:outputText value="#{msg.subject}" /></h3>
 				</div>
+				
+				
 			</ui:fragment>
-		</h3>
+		
 		<div id="msgCreateDate">
 			<!-- Date/Time -->
 			Posted on
