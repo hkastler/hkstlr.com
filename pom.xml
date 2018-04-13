@@ -44,6 +44,13 @@
 			<artifactId>rewrite-servlet</artifactId>
 			<version>3.4.2.Final</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>

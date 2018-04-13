@@ -22,6 +22,9 @@ import javax.mail.search.AndTerm;
 import javax.mail.search.FlagTerm;
 import javax.mail.search.SearchTerm;
 
+import com.sun.mail.imap.IMAPFolder;
+
+
 public class EmailReader {
 
     Properties props;
@@ -38,6 +41,7 @@ public class EmailReader {
         super();
         this.props = props;
         this.session = Session.getDefaultInstance(this.props, null);
+        
         try {
             this.store = session.getStore("imaps");
         } catch (NoSuchProviderException e) {
@@ -74,8 +78,8 @@ public class EmailReader {
     }
 
     public Message[] getImapEmails() {
-        Message msgs[];
-        try {
+        
+    	try {
             if (!store.isConnected()) {
             	storeConnect();
             }
@@ -87,8 +91,12 @@ public class EmailReader {
             }
 
             try {
-               
-                return blogBox.getMessages();
+                Message msgs[] = blogBox.getMessages();
+                FetchProfile fp = new FetchProfile();
+                fp.add(IMAPFolder.FetchProfileItem.MESSAGE);
+                
+                blogBox.fetch(msgs, fp);
+                return msgs;
 
             } catch (MessagingException e) {
                 log.log(Level.WARNING, "", e);
@@ -107,6 +115,7 @@ public class EmailReader {
             store.connect(props.getProperty("mail.imap.host"),
                     props.getProperty("username"),
                     props.getProperty("password"));
+            
         } catch (MessagingException ex) {
             log.log(Level.SEVERE, null, ex);
         }
@@ -185,19 +194,4 @@ public class EmailReader {
         }
     }
 
-    public Message[] getAllMail(Folder mailbox) {
-
-        try {
-            Message[] rmsgs = mailbox.getMessages();
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.ENVELOPE);
-            mailbox.fetch(rmsgs, fp);
-            //System.out.println("MAILS: " + rmsgs.length);
-            //rmsgs = msgs;
-            return rmsgs;
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-        return null;
-    }
 }
