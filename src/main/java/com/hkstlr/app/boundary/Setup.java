@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import com.hkstlr.app.control.Config;
+import com.hkstlr.app.control.FetchEvent;
 import com.hkstlr.app.entities.User;
 
 @Model
@@ -22,14 +23,9 @@ public class Setup {
 
     @Inject
     Config config;
-
-    @Inject
-    Index index;
     
     @Inject
-    private Event<String> event;
-    
-    
+    private Event<FetchEvent> event;    
 
     public Setup() {
         // jee needed constructor
@@ -40,7 +36,7 @@ public class Setup {
         config.getProps().put("folderName", this.folderName);
         config.getProps().put("username", this.user.getUsername());
         
-        event.fire("fetch");
+        event.fire(new FetchEvent(this.toString().concat("setup()")));
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext. getApplication()
                 .getNavigationHandler().handleNavigation(facesContext, null, 

@@ -1,32 +1,25 @@
 package com.hkstlr.app.boundary;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Asynchronous;
 import javax.ejb.DependsOn;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.mail.Message;
-import javax.mail.MessagingException;
 
 import com.hkstlr.app.control.Config;
 import com.hkstlr.app.control.DateFormatter;
-import com.hkstlr.app.control.EmailReader;
+import com.hkstlr.app.control.FetchEvent;
 import com.hkstlr.app.entities.BlogMessage;
 
 @ApplicationScoped
@@ -35,7 +28,7 @@ import com.hkstlr.app.entities.BlogMessage;
 public class Index {
 	
 	private List<BlogMessage> msgs = new ArrayList<>();
-    private Map<String,BlogMessage> msgMap = new LinkedHashMap<>();
+    private Map<String,Integer> msgMap = new LinkedHashMap<>();
     private static Logger log = Logger.getLogger(Index.class.getName());
     Setup setup;
 
@@ -43,9 +36,7 @@ public class Index {
     private Config config;
    
     @Inject
-    Event<String> event;
-    
-    
+    Event<FetchEvent> event;   
 
     public Index() {
         // no arg contructor
@@ -55,63 +46,10 @@ public class Index {
     void init() {
 
         log.log(Level.INFO, "setup:{0}", config.isSetup());
-        if (config.isSetup()) {
-                    
-            event.fire("fetch");
+        if (config.isSetup()) {                    
+            event.fire(new FetchEvent(this.getClass().getCanonicalName()));
         }
-    }
-
-    @Asynchronous  
-    public void fetchAndSetBlogMessages(){
-
-        if (!config.isSetup()) {
-            return;
-        }
-        
-        log.log(Level.INFO, "fetching");    
-		try {
-			
-			ArrayList<BlogMessage> fm = getBlogMessages().get();
-			this.msgs.clear();
-			this.msgs = fm;
-			
-		} catch (InterruptedException | ExecutionException e) {
-			log.log(Level.SEVERE, "error",e);
-		}
-		this.msgMap.clear();
-        this.msgs.forEach(bmsg ->
-                this.msgMap.put(bmsg.getHref(), bmsg));
-        
-    }
-    
-    
-    @Asynchronous 
-    public Future<ArrayList<BlogMessage>> getBlogMessages() throws InterruptedException {
-        CompletableFuture<ArrayList<BlogMessage>> completableFuture 
-          = new CompletableFuture<>();
-        ArrayList<BlogMessage> bmsgs = new ArrayList<>();
-        
-        EmailReader er = new EmailReader(config.getProps());
-        er.storeConnect();
-        
-        for (Message msg : er.getImapEmails()) {
-            try {
-                BlogMessage bmsg = new BlogMessage(msg);
-                bmsgs.add(bmsg);
-                
-            } catch (IOException | MessagingException e) {
-                log.log(Level.WARNING, "", e);
-            }
-        }
-
-        er.storeClose();
-        
-        Collections.sort(bmsgs, (BlogMessage o1, BlogMessage o2)
-                -> o2.getCreateDate().compareTo(o1.getCreateDate()));
-        
-        completableFuture.complete(bmsgs);
-        return completableFuture;
-    }
+    }    
 
     public Config getConfig() {
         return config;
@@ -129,29 +67,15 @@ public class Index {
         this.msgs = msgs;
     }
 
-    public Map<String, BlogMessage> getMsgMap() {
+    public Map<String, Integer> getMsgMap() {
         return msgMap;
     }
 
-    public void setMsgMap(Map<String, BlogMessage> msgMap) {
+    public void setMsgMap(Map<String, Integer> msgMap) {
         this.msgMap = msgMap;
     }
     
-    @Produces
-    public int listIndexByHref(String href) {
-    	int index = 0;
-    	
-    	for ( Map.Entry<String,BlogMessage> e : this.msgMap.entrySet() ) {
-    	    String key = e.getKey();
-    	    //BlogMessage val = e.getValue();
-    	    if(key.equals(href)) {
-    	    	break;
-    	    }
-    	    index++;
-    	}
-    	return index;
-    }
-    
+     
 
     public Setup getSetup() {
         return setup;
@@ -185,7 +109,7 @@ public class Index {
     
 
     public void goFetch() {
-    	 event.fire("fetch");
+    	event.fire(new FetchEvent(this.getClass().getCanonicalName().concat("goFetch")));
     }
 
 }

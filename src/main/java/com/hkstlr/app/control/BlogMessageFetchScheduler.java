@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import com.hkstlr.app.boundary.Index;
@@ -17,7 +18,7 @@ import com.hkstlr.app.boundary.Index;
 public class BlogMessageFetchScheduler {
 
     @Inject
-    Index index;
+    Event<FetchEvent> event;
 
     Logger log = Logger.getLogger(this.getClass().getName());
 
@@ -25,7 +26,7 @@ public class BlogMessageFetchScheduler {
     public void fetchMessages() {
         try {
             log.log(Level.INFO, "getting blog msgs");            
-            index.fetchAndSetBlogMessages();
+            event.fire(new FetchEvent(this.toString()));
             log.log(Level.INFO, "blog msgs retrieved");
             
         } catch (Exception ex) {
