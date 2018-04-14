@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import com.hkstlr.app.control.Config;
 import com.hkstlr.app.control.FetchEvent;
-import com.hkstlr.app.entities.User;
+
 
 @Model
 public class Setup {
@@ -36,7 +36,7 @@ public class Setup {
         config.getProps().put("folderName", this.folderName);
         config.getProps().put("username", this.user.getUsername());
         
-        event.fire(new FetchEvent(this.toString().concat("setup()")));
+        event.fire(new FetchEvent(this.getClass().getCanonicalName().concat(".setup()")));
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext. getApplication()
                 .getNavigationHandler().handleNavigation(facesContext, null, 
@@ -71,6 +71,33 @@ public class Setup {
     @Produces
     public boolean isSetup() {
     	return config.isSetup();
+    }
+    
+    public class User {
+
+    	private String username;
+    	private String password;
+
+    	public User() {
+
+    	}
+
+    	public String getUsername() {
+    		return username;
+    	}
+
+    	public void setUsername(String username) {
+    		this.username = username;
+    	}
+
+    	public String getPassword() {
+    		return password;
+    	}
+
+    	public void setPassword(String password) {
+    		this.password = password;
+    	}
+
     }
 
 }
