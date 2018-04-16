@@ -1,18 +1,21 @@
 package com.hkstlr.app.boundary;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Asynchronous;
 import javax.ejb.DependsOn;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,6 +23,7 @@ import javax.inject.Named;
 import com.hkstlr.app.control.Config;
 import com.hkstlr.app.control.DateFormatter;
 import com.hkstlr.app.control.FetchEvent;
+import com.hkstlr.app.control.IndexEvent;
 import com.hkstlr.app.entities.BlogMessage;
 
 @ApplicationScoped
@@ -37,6 +41,9 @@ public class Index {
    
     @Inject
     Event<FetchEvent> event;   
+    
+    @Inject
+    Event<String> indexEvent;
 
     public Index() {
         // no arg contructor
@@ -47,7 +54,8 @@ public class Index {
 
         log.log(Level.INFO, "setup:{0}", config.isSetup());
         if (config.isSetup()) {                    
-            event.fire(new FetchEvent(this.getClass().getCanonicalName()));
+            event.fire(new FetchEvent(this.getClass().getCanonicalName()
+            		.concat(".init()")));
         }
     }    
 
@@ -107,9 +115,36 @@ public class Index {
     	return new DateFormatter(date).formatjsFormat();
     }
     
+    public void setIndexMsgs(ArrayList<BlogMessage> fm) {
+    	
+    	Collections.sort(fm, (BlogMessage o1, BlogMessage o2)
+                -> o2.getCreateDate().compareTo(o1.getCreateDate()));
+    	getMsgs().clear();
+		setMsgs(fm);
+		getMsgMap().clear();
+		AtomicInteger i = new AtomicInteger(0);
+		getMsgs().forEach(bmsg ->
+			getMsgMap().put(bmsg.getHref(), i.getAndIncrement()));
+		
+    }
 
     public void goFetch() {
-    	event.fire(new FetchEvent(this.getClass().getCanonicalName().concat("goFetch")));
+    	event.fire(new FetchEvent(this.getClass().getCanonicalName()
+    			.concat(".goFetch()")));
+    }
+    
+    @Asynchronous
+    public void processIndexEvent(@Observes IndexEvent event) {
+    	
+        log.log(Level.INFO, "{0} Event being processed by ".concat(this.getClass().getCanonicalName()), 
+        		Thread.currentThread().getName());
+        log.log(Level.INFO, "{0} Event ", event.toString());
+        if("fetched".equals(event.getName())) {
+        	
+        	log.log(Level.INFO, "processIndexEvent Event ");
+        	setIndexMsgs(event.getMsgs());
+        }
+ 
     }
 
 }

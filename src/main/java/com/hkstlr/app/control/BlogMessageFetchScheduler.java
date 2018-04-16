@@ -8,8 +8,6 @@ import javax.ejb.Singleton;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import com.hkstlr.app.boundary.Index;
-
 /**
  *
  * @author henry.kastler

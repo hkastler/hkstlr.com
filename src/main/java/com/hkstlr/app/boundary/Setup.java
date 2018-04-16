@@ -14,8 +14,6 @@ import com.hkstlr.app.control.FetchEvent;
 
 @Model
 public class Setup {
-
-	private static final Logger logger = Logger.getLogger(Setup.class.getCanonicalName());
 	
     private User user = new User();
     private String folderName;

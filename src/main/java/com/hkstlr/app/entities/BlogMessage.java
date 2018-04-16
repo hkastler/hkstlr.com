@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Optional;
 import java.util.StringTokenizer;
 
 import javax.mail.BodyPart;
@@ -24,6 +25,7 @@ import com.hkstlr.app.control.StringChanger;
 
 public class BlogMessage {
 
+	private String messageId;
     private Date createDate;
     private String subject;
     private String body;
@@ -44,6 +46,7 @@ public class BlogMessage {
 
     public BlogMessage(Message msg) throws MessagingException, IOException {
         super();
+        this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0]).orElse(Double.toHexString(Math.random()));
         this.createDate = msg.getReceivedDate();
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
@@ -54,6 +57,7 @@ public class BlogMessage {
     
     public BlogMessage(Message msg, Integer numberOfWordsInUrl) throws MessagingException, IOException {
         super();
+        this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0]).orElse(Double.toHexString(Math.random()));
         this.createDate = msg.getReceivedDate();
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
@@ -61,8 +65,16 @@ public class BlogMessage {
         this.headers = messageHeadersToKeyValue(msg);
     }
     
+    
+    public String getMessageId() {
+		return messageId;
+	}
 
-    public Date getCreateDate() {
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
+	}
+
+	public Date getCreateDate() {
         return createDate;
     }
 

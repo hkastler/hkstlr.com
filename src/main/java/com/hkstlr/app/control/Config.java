@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 
+import com.hkstlr.app.control.EmailReader.EmailReaderPropertyKey;
+
 /**
  *
  * @author henry.kastler
@@ -52,8 +54,9 @@ public class Config {
     
     public boolean isSetup() {
         try {
-            return this.getProps().containsKey("username") && this.getProps().containsKey("password")
-                    && this.getProps().containsKey("folderName");
+            return this.getProps().containsKey(EmailReaderPropertyKey.USERNAME) 
+            		&& this.getProps().containsKey(EmailReaderPropertyKey.PASSWORD)
+                    && this.getProps().containsKey(EmailReaderPropertyKey.FOLDER_NAME);
         } catch (Exception e) {
             return false;
         }
