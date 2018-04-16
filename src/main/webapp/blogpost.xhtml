@@ -3,7 +3,7 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-
+     
 	<article itemprop="blogPost" itemscope="itemscope"
 		itemtype="https://schema.org/BlogPosting">
 		<meta itemprop="mainEntityOfPage" content="/#{msg.href}" />
@@ -16,21 +16,17 @@
 					</div>
 				</a>
 			</ui:fragment>
-			<ui:fragment rendered="#{!isInList}">
-			
+			<ui:fragment rendered="#{!isInList}">			
 				<div itemprop="name headline">
 					<h3 class="mt-4" id="msgSubject"><h:outputText value="#{msg.subject}" /></h3>
-				</div>
-				
-				
+				</div>				
 			</ui:fragment>
 		
 		<div id="msgCreateDate">
 			<!-- Date/Time -->
 			Posted on
 			<time datetime="#{index.jsFormat(msg.createDate)}Z"
-				itemprop="datePublished">#{msg.createDate}</time>
-
+				itemprop="datePublished">#{msg.createDate}</time>			
 		</div>
 		<ui:fragment rendered="#{isInList}">
 			<div id="msgBodyBegin">
@@ -42,6 +38,10 @@
 			<div id="msgBody" itemprop="articleBody">
 				<h:outputText value="#{msg.body}" escape="false" />
 			</div>
-		</ui:fragment>
+		</ui:fragment>	
+			
+		
 	</article>
+	
+	
 </ui:composition>
