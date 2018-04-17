@@ -38,8 +38,9 @@ public class FetchHandler implements Serializable {
         log.log(Level.INFO, "Thread {0} | Class {1}", 
         		new Object[] {Thread.currentThread().getName(),FetchHandler.class.getCanonicalName()});
         log.log(Level.INFO, "Event {0}", event.getEvent());
-        fetchAndSetBlogMessages();
- 
+        if(config.isSetup()) {
+        	fetchAndSetBlogMessages();
+        }	
     }
     
     @AccessTimeout(value=60000)
