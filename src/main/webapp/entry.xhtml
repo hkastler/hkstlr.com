@@ -1,5 +1,5 @@
 
-<ui:composition template="#{null eq request.getParameter('noTemplate')? '/templates/defaultTemplate.xhtml' : '/templates/clearTemplate.xhtml' }"
+<ui:composition template="#{null eq request.getParameter('ajaxTemplate')? '/templates/defaultTemplate.xhtml' : '/templates/clearTemplate.xhtml' }"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -28,7 +28,7 @@
 
 						<ui:param name="aMsg" value="#{index.msgs.get(msgIndex-1)}" />
 						<a href="#{baseHref}#{aMsg.href}" class="btn btn-info"
-							id="nav-prev"> <h:outputText
+							id="nav-prev" title="#{aMsg.subject}"> <h:outputText
 								value="&lt; #{aMsg.subject.substring(0, index.min(10,aMsg.subject.length()))}..." />
 						</a>
 
@@ -37,7 +37,7 @@
 
 						<ui:param name="aMsg" value="#{index.msgs.get(msgIndex+1)}" />
 						<a href="#{baseHref}#{aMsg.href}" class="btn btn-info"
-							id="nav-next"> <h:outputText
+							id="nav-next"  title="#{aMsg.subject}"> <h:outputText
 								value="#{aMsg.subject.substring(0, index.min(10,aMsg.subject.length()))}... &gt;" />
 						</a>
 
@@ -49,62 +49,7 @@
 	</ui:define>
 
 	<ui:define name="postBody">
-		<script>
-			//this syntax successfully reattaches the click event
-			//after the pagination container node gets rewritten by ajax
-			$(document).on("click", "[ id |='nav' ] a", function(e) {
-				
-				try {
-					e.preventDefault();
-					e.stopImmediatePropagation();
-				} catch (err) {
-					//do nothing
-				}
-
-				var disabledValue = $(this).attr("data-disabled");
-
-				if (disabledValue === "true" || disabledValue === "disabled") {
-					return false;
-				}
-
-				var myHref = $(this).attr("href");
-				var label = "";
-
-				try {
-					$.ajax({
-						type : 'GET',
-						url : myHref + "?noTemplate=1",
-						async : true,
-						success : function(response) {
-							try {																
-								var html = $.parseHTML(response); 								
-								var newcontent = $(html).filter('#content').html();
-								$('#content').html(newcontent);
-								var newtitle = $(html).find("#msgSubject").text();
-								//console.log(newtitle);
-								
-								document.title = newtitle;
-								
-							} catch (err) {
-								//do nothing
-							}
-						},
-						error : function() {
-							//do nothing
-						}
-					});
-
-					window.history.pushState({url : myHref}, label, myHref);
-					if (document.title !== label) {
-						document.title = label;
-					}
-				} catch (err) {
-					window.location.href = myHref;
-				}
-			});
-
-			
-		</script>
+		<script src="#{request.contextPath}/js/entry.js"></script>
 	</ui:define>
 
 	<!-- /.container -->
