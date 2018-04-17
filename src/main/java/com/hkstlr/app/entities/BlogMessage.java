@@ -26,6 +26,7 @@ import com.hkstlr.app.control.StringChanger;
 public class BlogMessage {
 
 	private String messageId;
+	private int messageNumber;
     private Date createDate;
     private String subject;
     private String body;
@@ -47,6 +48,7 @@ public class BlogMessage {
     public BlogMessage(Message msg) throws MessagingException, IOException {
         super();
         this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0]).orElse(Double.toHexString(Math.random()));
+        this.messageNumber = msg.getMessageNumber();
         this.createDate = msg.getReceivedDate();
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
@@ -58,6 +60,7 @@ public class BlogMessage {
     public BlogMessage(Message msg, Integer numberOfWordsInUrl) throws MessagingException, IOException {
         super();
         this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0]).orElse(Double.toHexString(Math.random()));
+        this.messageNumber = msg.getMessageNumber();
         this.createDate = msg.getReceivedDate();
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
@@ -72,6 +75,20 @@ public class BlogMessage {
 
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
+	}
+
+	/**
+	 * @return the messageNumber
+	 */
+	public int getMessageNumber() {
+		return messageNumber;
+	}
+
+	/**
+	 * @param messageNumber the messageNumber to set
+	 */
+	public void setMessageNumber(int messageNumber) {
+		this.messageNumber = messageNumber;
 	}
 
 	public Date getCreateDate() {

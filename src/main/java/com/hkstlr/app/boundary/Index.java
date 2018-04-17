@@ -1,7 +1,7 @@
 package com.hkstlr.app.boundary;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Asynchronous;
@@ -117,10 +118,13 @@ public class Index {
     
     public void setIndexMsgs(ArrayList<BlogMessage> fm) {
     	
-    	Collections.sort(fm, (BlogMessage o1, BlogMessage o2)
-                -> o2.getCreateDate().compareTo(o1.getCreateDate()));
+    	//Collections.sort(fm, (BlogMessage o1, BlogMessage o2)
+        //        -> o2.getCreateDate().compareTo(o1.getCreateDate()));
+    	List<BlogMessage> smsgs = fm.stream()
+    			.sorted(Comparator.comparing(BlogMessage::getMessageNumber).reversed())
+    			.collect(Collectors.toList());
     	getMsgs().clear();
-		setMsgs(fm);
+		setMsgs(smsgs);
 		getMsgMap().clear();
 		AtomicInteger i = new AtomicInteger(0);
 		getMsgs().forEach(bmsg ->
