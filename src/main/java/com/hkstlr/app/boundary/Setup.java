@@ -1,7 +1,5 @@
 package com.hkstlr.app.boundary;
 
-import java.util.logging.Logger;
-
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
