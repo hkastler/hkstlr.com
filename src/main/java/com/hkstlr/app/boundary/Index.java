@@ -38,7 +38,7 @@ public class Index {
     Setup setup;
 
     @Inject
-    private Config config;
+    Config config;
    
     @Inject
     Event<FetchEvent> event;   
