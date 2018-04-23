@@ -6,9 +6,10 @@
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
                 xmlns:ps="http://xmlns.jcp.org/jsf/passthrough">
 
-    <div class="panel my-4" jsfc="h:panelGroup" layout="block" rendered="#{not index.config.isSetup()}">
+    <div class="panel my-4" jsfc="h:panelGroup" layout="block" rendered="#{not index.config.isSetup() 
+    																			or null ne request.getParameter('reset')}">
         <div class="row">
-            <div class="col-lg-3"></div>
+            <div class="col-lg-3"></div> 
             <div class="col-lg-9">
                 <div class="panel panel-primary" id="setup">
                     <ui:include src="setupForm.xhtml">
