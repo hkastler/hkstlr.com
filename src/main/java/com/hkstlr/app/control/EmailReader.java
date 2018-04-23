@@ -142,7 +142,7 @@ public class EmailReader {
 
     public class EmailReaderPropertyKey {
 
-        public final static String FOLDER_NAME = "SENT";
+        public final static String FOLDER_NAME = "folderName";
         public final static String MAIL_IMAP_HOST = "mail.imap.host";
         public final static String USERNAME = "username";
         public final static String PASSWORD = "password";
