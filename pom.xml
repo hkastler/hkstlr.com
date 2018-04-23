@@ -57,20 +57,7 @@
             <artifactId>javax.mail</artifactId>
             <version>1.6.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.sleroy</groupId>
-            <artifactId>fakesmtp-junit-runner</artifactId>
-            <version>0.1.1</version>
-            <scope>test</scope>
-        </dependency>
         
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.11.0</version>
-        </dependency>
 
         <dependency>
             <groupId>org.jvnet.mock-javamail</groupId>
