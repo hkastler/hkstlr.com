@@ -1,15 +1,13 @@
 package com.hkstlr.app.control;
 
-import java.util.Arrays;
-import javax.mail.Folder;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Store;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 
+import java.util.Arrays;
+
+import javax.mail.MessagingException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -20,12 +18,10 @@ public class EmailReaderTest {
     
     EmailReader cut;
     Config config;
-    Session session;
-    Store store;
-    Folder folder;
-    
+        
     
     public EmailReaderTest() {
+    	//no-arg constructor
     }
     
   
@@ -33,9 +29,29 @@ public class EmailReaderTest {
     public void setUp() {
         config = new Config();
         config.getProps().put(EmailReader.EmailReaderPropertyKey.MAIL_IMAP_HOST, "localhost");
-        config.getProps().put("password", "p");
-        config.getProps().put("username", "u");
-        config.getProps().put("mail.store.protocol", "imap");
+        config.getProps().put(EmailReader.EmailReaderPropertyKey.PASSWORD, "p");
+        config.getProps().put(EmailReader.EmailReaderPropertyKey.USERNAME, "u");
+        config.getProps().put(EmailReader.EmailReaderPropertyKey.FOLDER_NAME, "b");
+        config.getProps().put(EmailReader.EmailReaderPropertyKey.STORE_PROTOCOL, "imap");
+    }
+
+    /**
+     * Test of getImapEmails method, of class EmailReader.
+     */
+    @Test
+    public void testGetImapEmails() {
+       cut = new EmailReader(config.getProps());
+       assertEquals(0,cut.getImapEmails().length); 
+    }
+
+    /**
+     * Test of getMessageCount method, of class EmailReader.
+     */
+    @Test
+    public void testGetMessageCount() {
+        cut = new EmailReader(config.getProps());
+        assertTrue(cut.blogBox.isOpen());
+        assertEquals(0,cut.getMessageCount());
     }
 
     /**
@@ -54,22 +70,14 @@ public class EmailReaderTest {
     }
 
     /**
-     * Test of getMessageCount method, of class EmailReader.
+     * Test of storeClose method, of class EmailReader.
      */
     @Test
-    public void testGetMessageCount() {
-        cut = new EmailReader(config.getProps());
-        assertTrue(cut.blogBox.isOpen());
-        assertEquals(0,cut.getMessageCount());
-    }
-
-    /**
-     * Test of getImapEmails method, of class EmailReader.
-     */
-    @Test
-    public void testGetImapEmails() {
-       cut = new EmailReader(config.getProps());
-       assertEquals(0,cut.getImapEmails().length); 
+    public void testStoreClose() {
+        cut = new EmailReader(config.getProps());        
+       assertTrue(cut.store.isConnected());
+       cut.storeClose();
+       assertTrue(!cut.store.isConnected());
     }
 
     /**
@@ -79,17 +87,6 @@ public class EmailReaderTest {
     public void testStoreConnect() {
        cut = new EmailReader(config.getProps());
        assertTrue(cut.store.isConnected()); 
-    }
-
-    /**
-     * Test of storeClose method, of class EmailReader.
-     */
-    @Test
-    public void testStoreClose() {
-        cut = new EmailReader(config.getProps());        
-       assertTrue(cut.store.isConnected());
-       cut.storeClose();
-       assertTrue(!cut.store.isConnected());
     }
 
     

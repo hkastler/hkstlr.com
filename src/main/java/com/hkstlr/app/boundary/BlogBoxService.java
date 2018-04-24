@@ -9,13 +9,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import com.hkstlr.app.control.EmailReader;
 import com.hkstlr.app.entities.BlogMessage;
 
 @Path("/service")
 public class BlogBoxService {
 
 	@Inject
-	Index index;
+	IndexBean index;
     
     public BlogBoxService() { 
     	//constructor
@@ -42,7 +43,7 @@ public class BlogBoxService {
     	//new prop to remove password from view without removing it from app config
     	Properties rProps = new Properties();
     	rProps.putAll(index.getConfig().getProps());
-    	rProps.remove("password");
+    	rProps.remove(EmailReader.EmailReaderPropertyKey.PASSWORD);
         return rProps;
     }
 }

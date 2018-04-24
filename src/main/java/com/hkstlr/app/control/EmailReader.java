@@ -17,16 +17,29 @@ import com.sun.mail.imap.IMAPFolder;
 
 public class EmailReader {
 
+    public class EmailReaderPropertyKey {
+
+        public final static String FOLDER_NAME = "folderName";
+        public final static String MAIL_IMAP_HOST = "mail.imap.host";
+        public final static String USERNAME = "username";
+        public final static String PASSWORD = "password";
+        public final static String STORE_PROTOCOL = "mail.store.protocol";
+
+        private EmailReaderPropertyKey() {
+            //strings
+        }
+    }
+    public final static String DEFAULT_PROTOCOL = "imaps";
     Properties props = new Properties();
     Session session;
     Store store;
     Folder blogBox;
     String mailhost;
+
     String username;
     String password;
 
     private final Logger log = Logger.getLogger(this.getClass().getName());
-    public final static String EMAIL_PROTOCOL = "imaps";
 
     private EmailReader() {
         // no-arg constructor
@@ -37,7 +50,7 @@ public class EmailReader {
         this.props = props;
         init();
     }
-
+    
     @PostConstruct
     void init() {
         this.mailhost = props.getProperty(EmailReaderPropertyKey.MAIL_IMAP_HOST, "hostname");
@@ -46,38 +59,13 @@ public class EmailReader {
 
         try {
             storeConnect();
+            //log.info(props.getProperty(EmailReaderPropertyKey.FOLDER_NAME));
             this.blogBox = store.getFolder(props.getProperty(EmailReaderPropertyKey.FOLDER_NAME));
+                        
             this.blogBox.open(Folder.READ_ONLY);
         } catch (MessagingException e) {
             log.log(Level.SEVERE, "error", e);
         }
-    }
-
-    public Properties getProps() {
-        return props;
-    }
-
-    public void setProps(Properties props) {
-        this.props = props;
-    }
-
-    public int getMessageCount() {
-        int msgCount = 0;
-        if (!store.isConnected()) {
-            init();
-        }
-        try {
-
-            if (!blogBox.isOpen()) {
-                blogBox.open(Folder.READ_ONLY);
-            }
-
-            msgCount = blogBox.getMessageCount();
-
-        } catch (MessagingException e) {
-            log.log(Level.WARNING, "", e);
-        }
-        return msgCount;
     }
 
     public Message[] getImapEmails() {
@@ -92,7 +80,6 @@ public class EmailReader {
 
             if (!this.blogBox.isOpen()) {
                 this.blogBox.open(Folder.READ_ONLY);
-
             }
 
             try {
@@ -116,19 +103,33 @@ public class EmailReader {
 
     }
 
-    public void storeConnect() {
-        this.session = Session.getDefaultInstance(this.props, null);
-        try {
-            this.store = session.getStore(props.getProperty("mail.store.protocol", EMAIL_PROTOCOL));
-        } catch (NoSuchProviderException e) {
-            log.log(Level.SEVERE, "error", e);
+    public int getMessageCount() {
+        int msgCount = 0;
+        if (!store.isConnected()) {
+            init();
         }
         try {
-            store.connect(this.mailhost, this.username, this.password);
 
-        } catch (MessagingException ex) {
-            log.log(Level.SEVERE, null, ex);
+            if (!blogBox.isOpen()) {
+                blogBox.open(Folder.READ_ONLY);
+            }
+
+            msgCount = blogBox.getMessageCount();
+
+        } catch (MessagingException e) {
+            log.log(Level.WARNING, "", e);
         }
+        return msgCount;
+    }
+
+    public Properties getProps() {
+        return props;
+    }
+
+   
+
+    public void setProps(Properties props) {
+        this.props = props;
     }
 
     public void storeClose() {
@@ -140,15 +141,18 @@ public class EmailReader {
         }
     }
 
-    public class EmailReaderPropertyKey {
+    public void storeConnect() {
+        this.session = Session.getDefaultInstance(this.props, null);
+        try {
+            this.store = session.getStore(props.getProperty(EmailReaderPropertyKey.STORE_PROTOCOL, DEFAULT_PROTOCOL));
+        } catch (NoSuchProviderException e) {
+            log.log(Level.SEVERE, "error", e);
+        }
+        try {
+            store.connect(this.mailhost, this.username, this.password);
 
-        public final static String FOLDER_NAME = "folderName";
-        public final static String MAIL_IMAP_HOST = "mail.imap.host";
-        public final static String USERNAME = "username";
-        public final static String PASSWORD = "password";
-
-        private EmailReaderPropertyKey() {
-            //strings
+        } catch (MessagingException ex) {
+            log.log(Level.SEVERE, null, ex);
         }
     }
 
