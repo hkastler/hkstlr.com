@@ -5,7 +5,7 @@ public class FetchEvent {
 	private String event = "";
 	
 	public FetchEvent() {
-		
+		super();
 	}
 
 	public FetchEvent(String event) {

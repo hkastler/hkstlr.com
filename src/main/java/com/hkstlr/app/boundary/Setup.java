@@ -32,7 +32,6 @@ public class Setup {
         config.getProps().put("folderName", this.folderName);
         config.getProps().put("username", this.user.getUsername());
         
-        event.fire(new FetchEvent(this.getClass().getCanonicalName().concat(".setup()")));
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext. getApplication()
                 .getNavigationHandler().handleNavigation(facesContext, null, 

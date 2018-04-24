@@ -30,9 +30,13 @@ public class FetchHandler implements Serializable {
     Config config;
      
     @Inject
-    Event<IndexEvent> event;    
- 
-    @Asynchronous
+    Event<IndexEvent> event;
+    
+    public FetchHandler() {
+		super();
+	}
+
+	@Asynchronous
     public void goFetch(@Observes FetchEvent event) {
  
         log.log(Level.INFO, "Thread {0} | Class {1}", 
