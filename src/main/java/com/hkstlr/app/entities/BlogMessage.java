@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Optional;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.activation.DataHandler;
@@ -42,37 +43,29 @@ public class BlogMessage {
     private static final Logger LOG = Logger.getLogger(BlogMessage.class.getName());
 
     public BlogMessage() {
-        // no-arg
-    }
-
-    public BlogMessage(Date createDate, String subject, String body) {
-        super();
-        this.createDate = createDate;
-        this.subject = subject;
-        this.body = body;
-        this.href = createHref(Integer.MAX_VALUE);
+    	super();
     }
 
     public BlogMessage(Message msg) throws MessagingException, IOException {
         super();
-        this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0]).orElse(Double.toHexString(Math.random()));
-        this.messageNumber = msg.getMessageNumber();
-        this.createDate = msg.getReceivedDate();
-        this.subject = msg.getSubject();
-        this.body = processMultipart(msg);
-        this.href = createHref(Integer.MAX_VALUE);
-        this.headers = messageHeadersToKeyValue(msg);
-
+        setBlogMessage(msg, Integer.MAX_VALUE);
     }
 
-    public BlogMessage(Message msg, Integer numberOfWordsInUrl) throws MessagingException, IOException {
+
+    public BlogMessage(Message msg, Integer hrefWordMax ) throws MessagingException, IOException {
         super();
-        this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0]).orElse(Double.toHexString(Math.random()));
+        setBlogMessage(msg, hrefWordMax);       
+    }
+    
+    
+    final void setBlogMessage(Message msg, Integer hrefWordMax) throws MessagingException, IOException {
+    	this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0])
+    			.orElse(Double.toHexString(Math.random()));
         this.messageNumber = msg.getMessageNumber();
         this.createDate = msg.getReceivedDate();
         this.subject = msg.getSubject();
         this.body = processMultipart(msg);
-        this.href = createHref(numberOfWordsInUrl);
+        this.href = createHref(hrefWordMax);
         this.headers = messageHeadersToKeyValue(msg);
     }
 
@@ -151,8 +144,7 @@ public class BlogMessage {
         try {
             allHeaders = message.getAllHeaders();
         } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+           LOG.log(Level.WARNING,"headers error",e);
         }
         StringBuilder hdrs = new StringBuilder();
         Collections.list(allHeaders).stream()
@@ -174,10 +166,10 @@ public class BlogMessage {
             part = multipart.getBodyPart(i);            
 
             if (part.getContentType().contains("text/plain")){            	
-            	textPart = Optional.of(part); //(String) part.getContent();        
+            	textPart = Optional.of(part);         
                 
             }else if (part.getContentType().contains("text/html")){   
-            	htmlPart = Optional.of(part);//processHtml((String) part.getContent());               
+            	htmlPart = Optional.of(part);               
 
             }else if (part.getContentType().contains("multipart/alternative")){
             	

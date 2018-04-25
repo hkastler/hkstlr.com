@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,15 +43,10 @@ public class BlogMessageTest {
      */
     @Test
     public void testGetMessageId() {
+        assertNotNull(cut.getMessageId());
     }
 
-    /**
-     * Test of setMessageId method, of class BlogMessage.
-     */
-    @Test
-    public void testSetMessageId() {
-    }
-
+    
     /**
      * Test of getMessageNumber method, of class BlogMessage.
      */
@@ -58,14 +54,7 @@ public class BlogMessageTest {
     public void testGetMessageNumber() {
     }
 
-    /**
-     * Test of setMessageNumber method, of class BlogMessage.
-     */
-    @Test
-    public void testSetMessageNumber() {
-    }
-
-    
+        
 
     /**
      * Test of getSubject method, of class BlogMessage.
@@ -75,13 +64,7 @@ public class BlogMessageTest {
         assertEquals("blog img hello world",cut.getSubject());
     }
 
-    /**
-     * Test of setSubject method, of class BlogMessage.
-     */
-    @Test
-    public void testSetSubject() {
-    }
-
+    
     /**
      * Test of getBody method, of class BlogMessage.
      */
@@ -89,25 +72,13 @@ public class BlogMessageTest {
     public void testGetBody() {
     }
 
-    /**
-     * Test of setBody method, of class BlogMessage.
-     */
-    @Test
-    public void testSetBody() {
-    }
-
+   
     /**
      * Test of getHref method, of class BlogMessage.
      */
     @Test
     public void testGetHref() {
-    }
-
-    /**
-     * Test of setHref method, of class BlogMessage.
-     */
-    @Test
-    public void testSetHref() {
+        assertEquals("blog-img-hello-world",cut.getHref());
     }
 
     /**
@@ -117,11 +88,5 @@ public class BlogMessageTest {
     public void testGetHeaders() {
     }
 
-    /**
-     * Test of setHeaders method, of class BlogMessage.
-     */
-    @Test
-    public void testSetHeaders() {
-    }
     
 }
