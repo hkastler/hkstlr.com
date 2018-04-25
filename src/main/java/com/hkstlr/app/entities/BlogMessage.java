@@ -148,7 +148,7 @@ public class BlogMessage {
         }
         StringBuilder hdrs = new StringBuilder();
         Collections.list(allHeaders).stream()
-                .forEach(h -> hdrs.append((h.getName().toString() + ": " + h.getValue().toString() + "\n")));
+                .forEach(h -> hdrs.append(h.getName().toString()).append(": ").append(h.getValue().toString()).append("\n"));
         return hdrs.toString();
     }
 
