@@ -41,10 +41,6 @@ public class EmailReader {
 
     private final Logger log = Logger.getLogger(this.getClass().getName());
 
-    private EmailReader() {
-        // no-arg constructor
-    }
-
     public EmailReader(Properties props) {
         super();
         this.props = props;
@@ -59,7 +55,7 @@ public class EmailReader {
 
         try {
             storeConnect();
-            //log.info(props.getProperty(EmailReaderPropertyKey.FOLDER_NAME));
+            
             this.blogBox = store.getFolder(props.getProperty(EmailReaderPropertyKey.FOLDER_NAME));
                         
             this.blogBox.open(Folder.READ_ONLY);
