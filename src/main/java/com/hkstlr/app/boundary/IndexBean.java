@@ -16,6 +16,7 @@ import javax.inject.Named;
 
 import com.hkstlr.app.control.Config;
 import com.hkstlr.app.control.DateFormatter;
+import com.hkstlr.app.control.FetchEvent;
 import com.hkstlr.app.control.Index;
 import com.hkstlr.app.control.IndexEvent;
 import com.hkstlr.app.entities.BlogMessage;
@@ -79,6 +80,11 @@ public class IndexBean {
     	return new DateFormatter(date).formatjsFormat();
     }
     
+    @Asynchronous
+    public void goFetch() {
+    	index.getEvent().fire(new FetchEvent(this.getClass().getCanonicalName()
+        		.concat(".init()")));
+    }
    
 
     @Asynchronous
