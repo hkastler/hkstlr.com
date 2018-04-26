@@ -38,10 +38,6 @@ public class FetchHandler implements Serializable {
 
 	@Asynchronous
     public void goFetch(@Observes FetchEvent event) {
- 
-        log.log(Level.INFO, "Thread {0} | Class {1}", 
-        		new Object[] {Thread.currentThread().getName(),FetchHandler.class.getCanonicalName()});
-        log.log(Level.INFO, "Event {0}", event.getEvent());
         if(config.isSetup()) {
         	fetchAndSetBlogMessages();
         }	
@@ -56,7 +52,7 @@ public class FetchHandler implements Serializable {
 		try {
 			
 			ArrayList<BlogMessage> fm = getBlogMessages().get();
-			event.fire(new IndexEvent("fetched",fm));
+			event.fire(new IndexEvent("setIndexMsgs",fm));
 			
 		} catch (InterruptedException | ExecutionException e) {
 			log.log(Level.SEVERE, "error",e);

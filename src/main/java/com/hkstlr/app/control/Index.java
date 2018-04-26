@@ -58,6 +58,12 @@ public class Index {
 		this.msgMap = msgMap;
 	}
 
+	
+
+	public Config getConfig() {
+		return config;
+	}
+
 
 	/**
 	 * @return the event

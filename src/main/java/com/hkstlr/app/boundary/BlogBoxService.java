@@ -9,17 +9,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import com.hkstlr.app.control.Config;
 import com.hkstlr.app.control.EmailReader;
+import com.hkstlr.app.control.Index;
 import com.hkstlr.app.entities.BlogMessage;
 
 @Path("/service")
 public class BlogBoxService {
 
 	@Inject
-	IndexBean index;
-    
+	Index index;
+	    
     public BlogBoxService() { 
-    	//constructor
+    	super();
     }
     
     @GET

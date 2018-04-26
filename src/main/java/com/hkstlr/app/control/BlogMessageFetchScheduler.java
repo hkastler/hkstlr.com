@@ -23,9 +23,9 @@ public class BlogMessageFetchScheduler {
     @Schedule(second = "0", minute = "0", hour = "*/2", persistent = false)
     public void fetchMessages() {
         try {
-            log.log(Level.INFO, "getting blog msgs");            
-            event.fire(new FetchEvent(this.toString()));
-            log.log(Level.INFO, "blog msgs retrieved");
+            log.log(Level.INFO, "new FetchEvent(\"{0}\")","fetchMessages()");            
+            event.fire(new FetchEvent("fetchMessages()"));
+            
             
         } catch (Exception ex) {
             log.log(Level.SEVERE, "error", ex);

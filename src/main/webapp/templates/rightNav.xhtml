@@ -18,7 +18,7 @@
                         <a href="#{request.contextPath}/">Front Page</a>
                     </li>
                     
-                    <li class="list-group-item" jsf:id="loginSideNavLink" rendered="#{sessionScope.user eq null}">
+                    <li class="list-group-item" jsf:id="loginSideNavLink" rendered="#{false}">
                         <a value="#{request.contextPath}/login/" 
                            jsfc="h:outputLink" >Login</a>
                     </li>

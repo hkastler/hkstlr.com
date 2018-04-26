@@ -30,24 +30,12 @@ public class IndexBean {
         
     @Inject
     Index index;
-
-    @Inject
-    Config config;
    
     @Inject
     Event<String> indexEvent;
 
     public IndexBean() {
-        // no arg contructor
-    }
-
-
-    public Config getConfig() {
-        return config;
-    }
-
-    public void setConfig(Config config) {
-        this.config = config;
+        super();
     }
 
     public List<BlogMessage> getMsgs() {
@@ -58,6 +46,9 @@ public class IndexBean {
         return index.getMsgMap();
     }
     
+    public Config getConfig() {
+    	return index.getConfig();
+    }
     
     public int min(int a, int b) {
     	return Math.min(a, b);
@@ -65,10 +56,9 @@ public class IndexBean {
 
     @Produces
     public String view() {
-
     	
         String template = "view.xhtml";
-        if (!config.isSetup()) {
+        if (!index.getConfig().isSetup()) {
             template = "setup/index.xhtml";
         }
 
@@ -83,19 +73,14 @@ public class IndexBean {
     @Asynchronous
     public void goFetch() {
     	index.getEvent().fire(new FetchEvent(this.getClass().getCanonicalName()
-        		.concat(".init()")));
+        		.concat(".goFetch()")));
     }
    
 
     @Asynchronous
     public void processIndexEvent(@Observes IndexEvent event) {
     	
-        log.log(Level.INFO, "{0} Event being processed by ".concat(this.getClass().getCanonicalName()), 
-        		Thread.currentThread().getName());
-        log.log(Level.INFO, "{0} Event ", event.toString());
-        if("fetched".equals(event.getName())) {
-        	
-        	log.log(Level.INFO, "processIndexEvent Event ");
+        if("setIndexMsgs".equals(event.getName())) {        	
         	index.setIndexMsgs(event.getMsgs());
         }
  
