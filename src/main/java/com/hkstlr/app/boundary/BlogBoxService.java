@@ -9,12 +9,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.hkstlr.app.control.Config;
 import com.hkstlr.app.control.EmailReader;
 import com.hkstlr.app.control.Index;
 import com.hkstlr.app.entities.BlogMessage;
 
-@Path("/service")
+@Path("/srvc")
 public class BlogBoxService {
 
 	@Inject
@@ -27,14 +26,14 @@ public class BlogBoxService {
     @GET
     @Produces("application/json")
     @Path("/entry/{href}")
-    public BlogMessage getEntryByHref(@PathParam("href") String href) {    	
+    public BlogMessage getHref(@PathParam("href") String href) {    	
         return index.getMsgs().get(index.getMsgMap().get(href));
     }
     
     @GET
     @Produces("application/json")
-    @Path("/entries")
-    public List<BlogMessage> getEntries() {    	
+    @Path("/msgs")
+    public List<BlogMessage> getMsgs() {    	
         return index.getMsgs();
     }
     

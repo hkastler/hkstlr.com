@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import com.hkstlr.app.control.Config;
+import com.hkstlr.app.control.EmailReader;
 import com.hkstlr.app.control.FetchEvent;
 
 
@@ -24,13 +25,20 @@ public class Setup {
     private Event<FetchEvent> event;    
 
     public Setup() {
-        // jee needed constructor
+        super();
     }
 
     public void setup()  {
-        config.getProps().put("password", this.user.getPassword());
-        config.getProps().put("folderName", this.folderName);
-        config.getProps().put("username", this.user.getUsername());
+        config.getProps().put(EmailReader.EmailReaderPropertyKey.PASSWORD, 
+        		this.user.getPassword());
+        config.getProps().put(EmailReader.EmailReaderPropertyKey.FOLDER_NAME, 
+        		this.folderName);
+        config.getProps().put(EmailReader.EmailReaderPropertyKey.USERNAME, 
+        		this.user.getUsername());
+        
+        if(config.isSetup()) {
+        	event.fire(new FetchEvent(this.getClass().getName().concat(".setup()")));
+        }
         
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext. getApplication()
