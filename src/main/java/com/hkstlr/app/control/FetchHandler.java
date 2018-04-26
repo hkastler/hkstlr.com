@@ -43,7 +43,7 @@ public class FetchHandler implements Serializable {
         }	
     }
     
-    @AccessTimeout(value=60000)
+    
     @Asynchronous  
     public void fetchAndSetBlogMessages(){
         
@@ -52,6 +52,7 @@ public class FetchHandler implements Serializable {
 		try {
 			
 			ArrayList<BlogMessage> fm = getBlogMessages().get();
+			
 			event.fire(new IndexEvent("setIndexMsgs",fm));
 			
 		} catch (InterruptedException | ExecutionException e) {
@@ -65,7 +66,8 @@ public class FetchHandler implements Serializable {
     
 
     
-    @Asynchronous 
+    @Asynchronous
+    @AccessTimeout(value=60000)
     public Future<ArrayList<BlogMessage>> getBlogMessages() throws InterruptedException {
         CompletableFuture<ArrayList<BlogMessage>> completableFuture 
           = new CompletableFuture<>();

@@ -63,7 +63,7 @@ public class BlogMessage {
     			.orElse(Double.toHexString(Math.random()));
         this.messageNumber = msg.getMessageNumber();
         this.createDate = msg.getReceivedDate();
-        this.subject = msg.getSubject();
+        this.subject = createBlogMessageSubject(msg.getSubject());
         this.body = processMultipart(msg);
         this.href = createHref(hrefWordMax);
         this.headers = messageHeadersToKeyValue(msg);
@@ -229,6 +229,18 @@ public class BlogMessage {
 
         String safe = Jsoup.clean(htmlBody.html(), wl);
         return StringUtil.normaliseWhitespace(safe);
+    }
+    
+    private String createBlogMessageSubject(String msgSubject) {
+    	
+    	String lsub = msgSubject;
+    	lsub = lsub.substring(4, msgSubject.length());
+    	lsub = lsub.trim();
+    	if(lsub.length()==0) {
+    		lsub = msgSubject;
+    	}
+    	return lsub;
+    	
     }
 
     /**
