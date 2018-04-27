@@ -78,7 +78,10 @@ public class FetchHandler implements Serializable {
         
         for (Message msg : er.getImapEmails()) {
             try {
-                BlogMessage bmsg = new BlogMessage(msg);
+                BlogMessage bmsg = new BlogMessage();
+                bmsg.setBlogMessage(msg, 
+                		config.getProps().getProperty("bmsg.createSubjectRegex", "blog"),
+                		25);
                 bmsgs.add(bmsg);
                 
             } catch (IOException | MessagingException e) {

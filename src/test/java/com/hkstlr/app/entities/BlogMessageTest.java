@@ -29,7 +29,7 @@ public class BlogMessageTest {
     
     @Before
     public void setUp() throws IOException, MessagingException {
-        Session session = Session.getDefaultInstance(System.getProperties(), null);;
+        Session session = Session.getDefaultInstance(System.getProperties(), null);
         Path eml = Paths.get("src","test","resources","message.eml");
         
         try (InputStream is = Files.newInputStream(eml)) {
@@ -61,7 +61,7 @@ public class BlogMessageTest {
      */
     @Test
     public void testGetSubject() {
-        assertEquals("blog img hello world",cut.getSubject());
+        assertEquals("img hello world",cut.getSubject());
     }
 
     
@@ -78,7 +78,8 @@ public class BlogMessageTest {
      */
     @Test
     public void testGetHref() {
-        assertEquals("blog-img-hello-world",cut.getHref());
+        
+        assertEquals("img-hello-world",cut.getHref());
     }
 
     /**

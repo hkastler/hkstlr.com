@@ -41,6 +41,7 @@ public class BlogMessage {
     private String href;
     private String headers;
     private static final Logger LOG = Logger.getLogger(BlogMessage.class.getName());
+    private static final String DEFAULT_SUBJECTREGEX = "[Bb]log";
 
     public BlogMessage() {
     	super();
@@ -48,22 +49,22 @@ public class BlogMessage {
 
     public BlogMessage(Message msg) throws MessagingException, IOException {
         super();
-        setBlogMessage(msg, Integer.MAX_VALUE);
+        setBlogMessage(msg, DEFAULT_SUBJECTREGEX, Integer.MAX_VALUE);
     }
 
 
     public BlogMessage(Message msg, Integer hrefWordMax ) throws MessagingException, IOException {
         super();
-        setBlogMessage(msg, hrefWordMax);       
+        setBlogMessage(msg, DEFAULT_SUBJECTREGEX, hrefWordMax);       
     }
     
     
-    final void setBlogMessage(Message msg, Integer hrefWordMax) throws MessagingException, IOException {
+    public void setBlogMessage(Message msg, String subjectRegex, Integer hrefWordMax) throws MessagingException, IOException {
     	this.messageId = Optional.ofNullable(msg.getHeader("Message-ID")[0])
     			.orElse(Double.toHexString(Math.random()));
         this.messageNumber = msg.getMessageNumber();
         this.createDate = msg.getReceivedDate();
-        this.subject = createBlogMessageSubject(msg.getSubject());
+        this.subject = createSubject(msg.getSubject(),subjectRegex);
         this.body = processMultipart(msg);
         this.href = createHref(hrefWordMax);
         this.headers = messageHeadersToKeyValue(msg);
@@ -163,8 +164,8 @@ public class BlogMessage {
         
         for (int i = 0; i < multipart.getCount(); i++) {
         	       	
-            part = multipart.getBodyPart(i);            
-
+            part = multipart.getBodyPart(i);     
+            
             if (part.getContentType().contains("text/plain")){            	
             	textPart = Optional.of(part);         
                 
@@ -173,7 +174,7 @@ public class BlogMessage {
 
             }else if (part.getContentType().contains("multipart/alternative")){
             	
-            	DataHandler mh = part.getDataHandler();            	
+            	DataHandler mh = part.getDataHandler();           	
                 MimeMultipart mm = (MimeMultipart) mh.getContent();
                 
                 for (int m = 0; m < mm.getCount(); m++) {                   
@@ -231,10 +232,10 @@ public class BlogMessage {
         return StringUtil.normaliseWhitespace(safe);
     }
     
-    private String createBlogMessageSubject(String msgSubject) {
+    private String createSubject(String msgSubject, String rfRegex ) {
     	
     	String lsub = msgSubject;
-    	lsub = lsub.substring(4, msgSubject.length());
+    	lsub = lsub.replaceFirst(rfRegex, "");
     	lsub = lsub.trim();
     	if(lsub.length()==0) {
     		lsub = msgSubject;
