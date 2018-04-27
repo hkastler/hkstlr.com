@@ -32,10 +32,10 @@ public class EmailReader {
     public final static String DEFAULT_PROTOCOL = "imaps";
     Properties props = new Properties();
     Session session;
-    Store store;
-    Folder blogBox;
+    Store store;    
     String mailhost;
 
+    Folder blogBox;
     String username;
     String password;
 
@@ -88,6 +88,7 @@ public class EmailReader {
                 return msgs;
 
             } catch (MessagingException e) {
+            	storeClose();
                 log.log(Level.WARNING, "", e);
             }
 
