@@ -16,11 +16,7 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.11.2</version>
-        </dependency>
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -40,30 +36,48 @@
             <scope>test</scope>
             <type>jar</type>
         </dependency>
+        
+        <dependency>
+            <groupId>org.jvnet.mock-javamail</groupId>
+            <artifactId>mock-javamail</artifactId>
+            <version>1.9</version>
+            <scope>test</scope>
+            <exclusions>
+            	<exclusion>
+            		<groupId>javax.mail</groupId>
+  					<artifactId>mail</artifactId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
+        
+        
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.2</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.ocpsoft.rewrite</groupId>
             <artifactId>rewrite-servlet</artifactId>
             <version>3.4.2.Final</version>
         </dependency>
 
+
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.1</version>
         </dependency>
+                
         
-
-        <dependency>
-            <groupId>org.jvnet.mock-javamail</groupId>
-            <artifactId>mock-javamail</artifactId>
-            <version>1.9</version>
-        </dependency>
     </dependencies>
 
     <profiles>
