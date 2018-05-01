@@ -3,6 +3,7 @@ package com.hkstlr.app.control;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -50,10 +51,11 @@ public class FetchHandler implements Serializable {
         log.log(Level.INFO, "fetching");    
         
 		try {
+			Optional<ArrayList<BlogMessage>> fm = Optional.ofNullable(getBlogMessages().get());
 			
-			ArrayList<BlogMessage> fm = getBlogMessages().get();
-			
-			event.fire(new IndexEvent("setIndexMsgs",fm));
+			if(fm.isPresent()) {
+				event.fire(new IndexEvent("setIndexMsgs",fm.get()));
+			}
 			
 		} catch (InterruptedException | ExecutionException e) {
 			log.log(Level.SEVERE, "error",e);
@@ -76,12 +78,10 @@ public class FetchHandler implements Serializable {
         EmailReader er = new EmailReader(config.getProps());
         er.storeConnect();
         
+        
         for (Message msg : er.getImapEmails()) {
             try {
-                BlogMessage bmsg = new BlogMessage();
-                bmsg.setBlogMessage(msg, 
-                		config.getProps().getProperty("bmsg.createSubjectRegex", "blog"),
-                		25);
+                BlogMessage bmsg = new BlogMessage(msg);
                 bmsgs.add(bmsg);
                 
             } catch (IOException | MessagingException e) {
