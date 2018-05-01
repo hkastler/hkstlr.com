@@ -3,12 +3,9 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-     
+    
 	<article itemprop="blogPost" itemscope="itemscope"
-		itemtype="https://schema.org/BlogPosting">
-		<meta itemprop="mainEntityOfPage" content="/#{msg.href}" />
-		<!-- Title -->
-		
+		itemtype="https://schema.org/BlogPosting">		
 			<ui:fragment rendered="#{isInList}">
 				<a href="entry/#{msg.href}" itemprop="mainEntityOfPage url">
 					<div itemprop="name headline">
@@ -16,7 +13,9 @@
 					</div>
 				</a>
 			</ui:fragment>
-			<ui:fragment rendered="#{!isInList}">			
+			<ui:fragment rendered="#{!isInList}">
+				<meta itemprop="mainEntityOfPage" content="/#{msg.href}" />
+						
 				<div itemprop="name headline">
 					<h3 class="mt-4" id="msgSubject"><h:outputText value="#{msg.subject}" /></h3>
 				</div>				
