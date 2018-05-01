@@ -1,7 +1,7 @@
 var siteName = "";
 	 $.ajax({
 		    type : 'GET',
-		    url:    '/rest/service/props',
+		    url:    '/rest/srvc/props',
 		    dataType: 'json',
 		    async: false, 
 		    success:  function(json) {
@@ -50,9 +50,7 @@ $(document).on(
 					}
 				});
 
-				window.history.pushState({
-					url : myHref
-				}, atitle, myHref);
+				window.history.pushState({url : myHref}, atitle, myHref);
 				if (document.title !== atitle) {
 					document.title = atitle;
 				}
