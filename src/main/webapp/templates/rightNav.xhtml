@@ -11,27 +11,13 @@
          <!-- Side Widget -->
         <form jsf:id="sideNavLinks">
         <div class="card my-4">
-            <h5 class="card-header">Navigation</h5>
+            <h5 class="card-header">#{messages['navigation']}</h5>
             <div class="card-block">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#{request.contextPath}/">Front Page</a>
+                        <a href="#{request.contextPath}/">#{messages['home']}</a>
                     </li>
                     
-                    <li class="list-group-item" jsf:id="loginSideNavLink" rendered="#{false}">
-                        <a value="#{request.contextPath}/login/" 
-                           jsfc="h:outputLink" >Login</a>
-                    </li>
-                    <li class="list-group-item" jsf:id="adminSideNavLink" rendered="#{sessionScope.user ne null}">
-                        <a value="#{request.contextPath}/admin/" 
-                           jsfc="h:outputLink" 
-                           jsf:id="link-admin">Admin</a>
-                    </li>
-                    <li class="list-group-item" jsf:id="logoutSideNavLink" rendered="#{sessionScope.user ne null}">
-                        <a action="#{loginBean.logout()}" 
-                            jsfc="h:commandLink"
-                            jsf:id="link-logout">Logout</a>
-                    </li>     
                 </ul>
             </div>
         </div>
