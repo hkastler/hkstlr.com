@@ -20,6 +20,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeMultipart;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.MediaType;
 
 import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
@@ -166,10 +167,10 @@ public class BlogMessage {
         	       	
             part = multipart.getBodyPart(i);     
             
-            if (part.getContentType().contains("text/plain")){            	
+            if (part.getContentType().contains(MediaType.TEXT_PLAIN)){            	
             	textPart = Optional.of(part);         
                 
-            }else if (part.getContentType().contains("text/html")){   
+            }else if (part.getContentType().contains(MediaType.TEXT_HTML)){   
             	htmlPart = Optional.of(part);               
 
             }else if (part.getContentType().contains("multipart/alternative")){
@@ -179,7 +180,7 @@ public class BlogMessage {
                 
                 for (int m = 0; m < mm.getCount(); m++) {                   
             	   BodyPart p = mm.getBodyPart(m);
-            	   if(p.getContentType().contains("text/html")) {
+            	   if(p.getContentType().contains(MediaType.TEXT_HTML)) {
             		   htmlPart = Optional.of(p);
             	   }
                 }        
