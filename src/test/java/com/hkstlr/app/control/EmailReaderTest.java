@@ -3,7 +3,13 @@ package com.hkstlr.app.control;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Properties;
 
 import javax.mail.MessagingException;
 
@@ -26,13 +32,14 @@ public class EmailReaderTest {
     
   
     @Before
-    public void setUp() {
-        config = new Config();
-        config.getProps().put(EmailReader.EmailReaderPropertyKey.MAIL_IMAP_HOST, "localhost");
-        config.getProps().put(EmailReader.EmailReaderPropertyKey.PASSWORD, "p");
-        config.getProps().put(EmailReader.EmailReaderPropertyKey.USERNAME, "u");
-        config.getProps().put(EmailReader.EmailReaderPropertyKey.FOLDER_NAME, "b");
-        config.getProps().put(EmailReader.EmailReaderPropertyKey.STORE_PROTOCOL, "imap");
+    public void setUp() throws IOException {
+    	Path propsPath = Paths.get("src","test","resources","app.properties");
+    	try (InputStream is = Files.newInputStream(propsPath)) {
+        	Properties props = new Properties();
+        	props.load(is);
+        	config = new Config(props);
+        }
+        
     }
 
     /**
