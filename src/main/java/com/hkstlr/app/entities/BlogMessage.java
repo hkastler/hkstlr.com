@@ -43,6 +43,7 @@ public class BlogMessage {
     private String headers;
     private static final Logger LOG = Logger.getLogger(BlogMessage.class.getName());
     private static final String DEFAULT_SUBJECTREGEX = "[Bb]log";
+    public static final Integer DEFAULT_HREFWORDMAX = 10;
 
     public BlogMessage() {
     	super();
@@ -50,14 +51,20 @@ public class BlogMessage {
 
     public BlogMessage(Message msg) throws MessagingException, IOException {
         super();
-        setBlogMessage(msg, DEFAULT_SUBJECTREGEX, Integer.MAX_VALUE);
+        setBlogMessage(msg, DEFAULT_SUBJECTREGEX, DEFAULT_HREFWORDMAX);
     }
-
-
+    
     public BlogMessage(Message msg, Integer hrefWordMax ) throws MessagingException, IOException {
         super();
         setBlogMessage(msg, DEFAULT_SUBJECTREGEX, hrefWordMax);       
     }
+    
+    public BlogMessage(Message msg, String subjectRegex, Integer hrefWordMax ) throws MessagingException, IOException {
+        super();
+        setBlogMessage(msg, subjectRegex, hrefWordMax);       
+    }
+
+
     
     
     public void setBlogMessage(Message msg, String subjectRegex, Integer hrefWordMax) throws MessagingException, IOException {
@@ -138,8 +145,9 @@ public class BlogMessage {
     public void setHeaders(String headers) {
         this.headers = headers;
     }
+    
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     private String messageHeadersToKeyValue(Message message) {
 
         Enumeration<Header> allHeaders = null;

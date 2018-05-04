@@ -71,22 +71,30 @@ public class FetchHandler implements Serializable {
     @Asynchronous
     @AccessTimeout(value=60000)
     public Future<ArrayList<BlogMessage>> getBlogMessages() throws InterruptedException {
+    	
         CompletableFuture<ArrayList<BlogMessage>> completableFuture 
           = new CompletableFuture<>();
+        
         ArrayList<BlogMessage> bmsgs = new ArrayList<>();
         
-        EmailReader er = new EmailReader(config.getProps());
-        er.storeConnect();
+        Integer hrefMaxWords = Optional.ofNullable(Integer.parseInt(config.getProps()
+        		.getProperty("bmgs.hrefWordMax")))
+        		.orElse(BlogMessage.DEFAULT_HREFWORDMAX);
         
+        EmailReader er = new EmailReader(config.getProps());
+        er.storeConnect();        
         
         for (Message msg : er.getImapEmails()) {
             try {
-                BlogMessage bmsg = new BlogMessage(msg);
+                BlogMessage bmsg = new BlogMessage(msg, hrefMaxWords);
                 bmsgs.add(bmsg);
                 
             } catch (IOException | MessagingException e) {
                 log.log(Level.WARNING, "", e);
-            }
+                continue;
+            } finally {
+				er.storeClose();
+			}
         }
 
         er.storeClose();       
