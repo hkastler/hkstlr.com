@@ -23,7 +23,7 @@ public class Config {
     private Logger log = Logger.getLogger(this.getClass().getName());
 
     public Config() {
-        // jee needed constructor
+        super();
     }
 
     public Config(Properties props) {
